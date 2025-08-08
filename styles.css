@@ -56,17 +56,108 @@ body {
     align-items: center;
 }
 
+/* Logo Image Styles - Responsive Design */
+.logo-image {
+    height: 2.5rem;
+    width: auto;
+    object-fit: contain;
+    transition: all 0.3s ease;
+}
+
+/* Update existing logo styles */
 .nav-logo {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    font-size: 1.5rem;
     font-weight: 700;
     color: var(--primary-color);
 }
 
-.nav-logo i {
-    font-size: 2rem;
+.nav-logo .logo-image {
+    height: 2.5rem;
+    flex-shrink: 0;
+}
+
+.nav-logo .logo-text {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+/* Footer Logo Styles - Only text, no image */
+.footer-logo {
+    display: flex !important;
+    align-items: center !important;
+    font-weight: 700 !important;
+    margin-bottom: 1rem !important;
+}
+
+.footer-logo .logo-text {
+    font-size: 1.5rem !important;
+    color: var(--primary-color) !important;
+    font-weight: 700 !important;
+}
+
+/* Hide old icons only */
+.nav-logo i,
+.footer-logo i {
+    display: none !important;
+}
+
+/* Responsive Logo Adjustments */
+@media (max-width: 768px) {
+    .nav-logo .logo-image {
+        height: 2rem;
+    }
+    
+    .nav-logo .logo-text {
+        font-size: 1.25rem;
+    }
+    
+    .footer-logo .logo-text {
+        font-size: 1.25rem !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .nav-logo .logo-image {
+        height: 1.75rem;
+    }
+    
+    .nav-logo .logo-text {
+        font-size: 1.125rem;
+    }
+    
+    .nav-logo {
+        gap: 0.375rem;
+    }
+    
+    .footer-logo .logo-text {
+        font-size: 1.125rem !important;
+    }
+}
+
+/* Extra small devices */
+@media (max-width: 360px) {
+    .nav-logo .logo-image {
+        height: 1.5rem;
+    }
+    
+    .nav-logo .logo-text {
+        font-size: 1rem;
+    }
+    
+    .footer-logo .logo-text {
+        font-size: 1rem !important;
+    }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .logo-image {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+    }
 }
 
 .nav-menu {
