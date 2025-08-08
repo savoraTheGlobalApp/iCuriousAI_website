@@ -965,3 +965,246 @@ html {
 .stat-card {
     animation: fadeInUp 0.6s ease-out;
 } 
+
+/* Products Preview Section */
+.products-preview {
+    padding: 5rem 0;
+    background: var(--bg-secondary);
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.product-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: var(--shadow-md);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.product-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--gradient-primary);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover::before {
+    transform: scaleX(1);
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-xl);
+}
+
+.product-card.featured {
+    border: 2px solid var(--primary-color);
+    transform: scale(1.05);
+}
+
+.product-card.featured:hover {
+    transform: scale(1.05) translateY(-5px);
+}
+
+.product-icon {
+    width: 60px;
+    height: 60px;
+    background: var(--gradient-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+}
+
+.product-icon i {
+    font-size: 1.5rem;
+    color: white;
+}
+
+.product-card h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+}
+
+.product-card p {
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.product-features {
+    list-style: none;
+}
+
+.product-features li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-secondary);
+}
+
+.product-features i {
+    color: var(--primary-color);
+    font-size: 0.875rem;
+}
+
+.products-cta {
+    text-align: center;
+    margin-top: 3rem;
+}
+
+/* Products Hero */
+.products-hero {
+    padding: 8rem 0 4rem;
+    background: var(--gradient-primary);
+    color: white;
+    text-align: center;
+}
+
+.products-hero-content h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.products-hero-content p {
+    font-size: 1.25rem;
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Coming Soon Section */
+.coming-soon {
+    padding: 5rem 0;
+    background: var(--bg-secondary);
+}
+
+.coming-soon-content {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.coming-soon-icon {
+    width: 100px;
+    height: 100px;
+    background: var(--gradient-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 2rem;
+}
+
+.coming-soon-icon i {
+    font-size: 2.5rem;
+    color: white;
+}
+
+.coming-soon-content h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+}
+
+.coming-soon-content p {
+    font-size: 1.125rem;
+    color: var(--text-secondary);
+    margin-bottom: 3rem;
+    line-height: 1.6;
+}
+
+.development-status {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+}
+
+.status-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.status-item i {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+}
+
+.status-item span {
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.coming-soon-cta {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* Responsive Design for Products */
+@media (max-width: 768px) {
+    .products-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .product-card.featured {
+        transform: none;
+    }
+    
+    .product-card.featured:hover {
+        transform: translateY(-5px);
+    }
+    
+    .products-hero-content h1 {
+        font-size: 2.5rem;
+    }
+    
+    .development-status {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .coming-soon-cta {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .products-hero-content h1 {
+        font-size: 2rem;
+    }
+    
+    .coming-soon-content h2 {
+        font-size: 2rem;
+    }
+    
+    .product-card {
+        padding: 1.5rem;
+    }
+} 
