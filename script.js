@@ -98,31 +98,37 @@ const contactForm = document.querySelector('.contact-form form');
 //   });
 // }
 
-//     // Netlify Forms: require reCAPTCHA and let browser submit normally
-//     if (contactForm && contactForm.hasAttribute('data-netlify')) {
-//     const submitBtn = contactForm.querySelector('button[type="submit"]');
-//     if (submitBtn) submitBtn.disabled = true;
+// Netlify Forms: show inline message if reCAPTCHA not solved; otherwise submit normally
+if (contactForm && contactForm.hasAttribute('data-netlify')) {
+    const captchaContainer = contactForm.querySelector('[data-netlify-recaptcha]');
+    const errorEl = contactForm.querySelector('#captcha-error') || (() => {
+      const d = document.createElement('div');
+      d.id = 'captcha-error';
+      d.className = 'form-error';
+      if (captchaContainer) captchaContainer.insertAdjacentElement('afterend', d);
+      return d;
+    })();
+  
+    const solved = () => {
+      const tokenEl = contactForm.querySelector('textarea[name="g-recaptcha-response"]');
+      return !!(tokenEl && tokenEl.value.trim().length);
+    };
+  
+    // Clear message when captcha gets solved
+    const clearOnSolve = () => { if (solved()) errorEl.textContent = ''; };
+    const mo = new MutationObserver(clearOnSolve);
+    mo.observe(contactForm, { subtree: true, childList: true });
+  
+    contactForm.addEventListener('submit', (e) => {
+      if (!solved()) {
+        e.preventDefault();
+        errorEl.textContent = 'Please complete the reCAPTCHA to send your message.';
+        const target = contactForm.querySelector('.g-recaptcha, [data-netlify-recaptcha]');
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    });
+  }
 
-//     const enableIfSolved = () => {
-//         const tokenEl = contactForm.querySelector('textarea[name="g-recaptcha-response"]');
-//         const solved = tokenEl && tokenEl.value.trim().length > 0;
-//         if (submitBtn) submitBtn.disabled = !solved;
-//     };
-
-//     // Watch for the captcha widget/token to appear
-//     const observer = new MutationObserver(enableIfSolved);
-//     observer.observe(contactForm, { subtree: true, childList: true });
-//     enableIfSolved();
-
-//     contactForm.addEventListener('submit', (e) => {
-//         const tokenEl = contactForm.querySelector('textarea[name="g-recaptcha-response"]');
-//         if (!tokenEl || !tokenEl.value.trim()) {
-//         e.preventDefault(); // extra guard if not solved
-//         }
-//     });
-//     }
-
-// Netlify Forms: allow native submit; no JS interception
 
     // Button click handlers
     document.querySelectorAll('.btn-primary').forEach(btn => {

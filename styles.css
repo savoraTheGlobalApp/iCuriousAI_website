@@ -1470,3 +1470,9 @@ html {
         margin-top: 0.5rem;
     }
 } 
+
+.form-error {
+  color: #ef4444; /* red-500 */
+  font-size: 0.9rem;
+  margin-top: 8px;
+} 
