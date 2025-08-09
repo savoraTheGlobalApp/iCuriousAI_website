@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact • iCurious AI</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="icon" href="images/iCuriousAI_logo_without_text.png?v=1" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="images/iCuriousAI_logo_without_text.png?v=1">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-logo">
+        <img src="images/iCuriousAI_logo_without_text.png" alt="iCurious AI Logo" class="logo-image">
+        <span class="logo-text">iCurious AI</span>
+      </div>
+      <ul class="nav-menu">
+        <li><a href="index.html#home">Home</a></li>
+        <li><a href="products.html">Products</a></li>
+        <li><a href="index.html#vision">Vision</a></li>
+        <li><a href="index.html#features">Features</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="hamburger"><span></span><span></span><span></span></div>
+    </div>
+  </nav>
+
+  <!-- Contact Section -->
+  <section class="contact">
+    <div class="container">
+      <div class="section-header">
+        <h2>Join the Education Revolution</h2>
+        <p>Be part of transforming how the next generation learns</p>
+      </div>
+      <div class="contact-content">
+        <div class="contact-info">
+          <h3>Ready to Get Started?</h3>
+          <p>Our AI-powered platform is designed to help students discover their true potential and prepare for the future of work.</p>
+          <p class="contact-instruction">For demos, partnerships, or any questions, please fill out the form and we’ll get back to you soon.</p>
+        </div>
+
+        <div class="contact-form">
+          <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/thank-you.html">
+            <input type="hidden" name="form-name" value="contact" />
+            <p hidden><label>Don’t fill this out if you're human: <input name="bot-field" /></label></p>
+
+            <div class="form-group">
+              <input type="text" name="name" placeholder="Your Name" required>
+            </div>
+            <div class="form-group">
+              <input type="email" name="email" placeholder="Your Email" required>
+            </div>
+            <div class="form-group">
+              <select name="role" required>
+                <option value="">I am a...</option>
+                <option value="student">Student</option>
+                <option value="parent">Parent</option>
+                <option value="educator">Educator</option>
+                <option value="school-partner">School Partner</option>
+                <option value="industry-partner">Industry Partner</option>
+                <option value="university-partner">University Partner</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <textarea name="message" placeholder="Tell us about your interest..." rows="4"></textarea>
+            </div>
+
+            <div data-netlify-recaptcha="true"></div>
+            <div id="captcha-error" class="form-error" aria-live="polite" role="alert"></div>
+            <button type="submit" class="btn btn-primary">Send Message</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Founders Section -->
+  <section class="founders">
+    <div class="container">
+      <div class="section-header">
+        <h2>Our Founders</h2>
+        <p>Meet the team behind iCurious AI</p>
+      </div>
+
+      <div class="founders-grid">
+        <div class="founder-card">
+          <div class="avatar">
+            <img src="images/Shorya_photograph.jpg" alt="Shorya Kumar" onerror="this.style.display='none'; this.parentElement.classList.add('fallback');">
+            <span class="avatar-fallback">SK</span>
+          </div>
+          <h3>Shorya Kumar</h3>
+          <p class="role">Co‑Founder & CEO</p>
+          <a class="social-link" href="https://www.linkedin.com/in/shoryak/" target="_blank" rel="noopener"><i class="fa-brands fa-linkedin"></i> LinkedIn</a>
+        </div>
+
+        <div class="founder-card">
+          <div class="avatar">
+            <img src="images/Rajan_photograph.jpg" alt="Rajan Kumar" onerror="this.style.display='none'; this.parentElement.classList.add('fallback');">
+            <span class="avatar-fallback">RK</span>
+          </div>
+          <h3>Rajan Kumar</h3>
+          <p class="role">Co‑Founder & COO</p>
+          <a class="social-link" href="https://www.linkedin.com/in/rajan3473p/" target="_blank" rel="noopener"><i class="fa-brands fa-linkedin"></i> LinkedIn</a>
+        </div>
+
+        <div class="founder-card">
+          <div class="avatar">
+            <img src="images/Piyush_photograph.jpg" alt="Piyush Kumar" onerror="this.style.display='none'; this.parentElement.classList.add('fallback');">
+            <span class="avatar-fallback">PK</span>
+          </div>
+          <h3>Piyush Kumar</h3>
+          <p class="role">Co‑Founder & CTO</p>
+          <a class="social-link" href="https://linkedin.com/in/kpiyush25" target="_blank" rel="noopener"><i class="fa-brands fa-linkedin"></i> LinkedIn</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <div class="footer-logo">
+            <span class="logo-text">iCurious AI</span>
+          </div>
+          <p>Transforming education through AI-powered personalized learning experiences.</p>
+        </div>
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="index.html#home">Home</a></li>
+            <li><a href="products.html">Products</a></li>
+            <li><a href="index.html#vision">Vision</a></li>
+            <li><a href="index.html#features">Features</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Connect</h4>
+          <div class="social-links">
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 iCurious AI. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <script src="script.js?v=6"></script>
+</body>
+</html>

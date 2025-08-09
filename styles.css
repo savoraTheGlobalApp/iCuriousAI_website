@@ -1476,3 +1476,43 @@ html {
   font-size: 0.9rem;
   margin-top: 8px;
 } 
+
+/* Founders */
+.founders { padding: 80px 0; background: #f8fafc; }
+.founders .section-header h2 { margin-bottom: 6px; }
+.founders-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+  align-items: stretch;
+}
+.founder-card {
+  background: rgba(255,255,255,0.85);
+  border: 1px solid rgba(15,23,42,0.06);
+  border-radius: 16px;
+  padding: 24px;
+  text-align: center;
+  box-shadow: 0 20px 45px rgba(15,23,42,.08);
+  backdrop-filter: blur(10px);
+}
+.founder-card h3 { margin: 10px 0 4px; }
+.founder-card .role { color: #64748b; margin-bottom: 12px; }
+
+.avatar {
+  width: 120px; height: 120px; margin: 0 auto 12px;
+  border-radius: 999px; overflow: hidden; position: relative;
+  display: grid; place-items: center;
+  background: radial-gradient(120px 120px at 30% 30%, #8b5cf6, #22d3ee);
+  color: #fff;
+}
+.avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.avatar .avatar-fallback { display: none; font-weight: 800; font-size: 32px; letter-spacing: .5px; }
+.avatar.fallback .avatar-fallback { display: block; }
+
+.social-link {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 14px; border-radius: 10px;
+  background: #0a66c2; color: #fff; text-decoration: none; font-weight: 600;
+  box-shadow: 0 10px 24px rgba(10,102,194,.25);
+}
+.social-link:hover { filter: brightness(1.05); transform: translateY(-1px); transition: .15s; } 
