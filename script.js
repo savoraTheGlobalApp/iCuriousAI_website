@@ -79,30 +79,47 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Form submission handling
-    const contactForm = document.querySelector('.contact-form form');
-    if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Get form data
-            const formData = new FormData(this);
-            const data = Object.fromEntries(formData);
-            
-            // Simulate form submission
-            const submitBtn = this.querySelector('button[type="submit"]');
-            const originalText = submitBtn.textContent;
-            
-            submitBtn.textContent = 'Sending...';
-            submitBtn.disabled = true;
-            
-            // Simulate API call
-            setTimeout(() => {
-                alert('Thank you for your interest! We\'ll get back to you soon.');
-                this.reset();
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
-            }, 2000);
-        });
+const contactForm = document.querySelector('.contact-form form');
+
+// For non‑Netlify forms only (demo behavior)
+if (contactForm && !contactForm.hasAttribute('data-netlify')) {
+  contactForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const submitBtn = this.querySelector('button[type="submit"]');
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = 'Sending...';
+    submitBtn.disabled = true;
+    setTimeout(() => {
+      alert('Thank you for your interest! We\'ll get back to you soon.');
+      this.reset();
+      submitBtn.textContent = originalText;
+      submitBtn.disabled = false;
+    }, 2000);
+  });
+}
+
+    // Netlify Forms: require reCAPTCHA and let browser submit normally
+    if (contactForm && contactForm.hasAttribute('data-netlify')) {
+    const submitBtn = contactForm.querySelector('button[type="submit"]');
+    if (submitBtn) submitBtn.disabled = true;
+
+    const enableIfSolved = () => {
+        const tokenEl = contactForm.querySelector('textarea[name="g-recaptcha-response"]');
+        const solved = tokenEl && tokenEl.value.trim().length > 0;
+        if (submitBtn) submitBtn.disabled = !solved;
+    };
+
+    // Watch for the captcha widget/token to appear
+    const observer = new MutationObserver(enableIfSolved);
+    observer.observe(contactForm, { subtree: true, childList: true });
+    enableIfSolved();
+
+    contactForm.addEventListener('submit', (e) => {
+        const tokenEl = contactForm.querySelector('textarea[name="g-recaptcha-response"]');
+        if (!tokenEl || !tokenEl.value.trim()) {
+        e.preventDefault(); // extra guard if not solved
+        }
+    });
     }
 
     // Button click handlers
