@@ -267,28 +267,37 @@
                     </div>
                 </div>
                 <div class="contact-form">
-                    <form>
+                    <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/thank-you">
+                        <input type="hidden" name="form-name" value="contact" />
+                        <p hidden>
+                          <label>Don’t fill this out if you're human: <input name="bot-field" /></label>
+                        </p>
+                      
                         <div class="form-group">
-                            <input type="text" placeholder="Your Name" required>
+                          <input type="text" name="name" placeholder="Your Name" required>
                         </div>
                         <div class="form-group">
-                            <input type="email" placeholder="Your Email" required>
+                          <input type="email" name="email" placeholder="Your Email" required>
                         </div>
                         <div class="form-group">
-                            <select required>
-                                <option value="">I am a...</option>
-                                <option value="parent">Parent</option>
-                                <option value="educator">Educator</option>
-                                <option value="partner">Industry Partner</option>
-                                <option value="student">Student</option>
-                            </select>
+                          <select name="role" required>
+                            <option value="">I am a...</option>
+                            <option value="student">Student</option>
+                            <option value="parent">Parent</option>
+                            <option value="educator">Educator</option>
+                            <option value="school-partner">School Partner</option>
+                            <option value="industry-partner">Industry Partner</option>
+                            <option value="university-partner">University Partner</option>
+                            <option value="other">Other</option>
+                          </select>
                         </div>
                         <div class="form-group">
-                            <textarea placeholder="Tell us about your interest..." rows="4"></textarea>
+                          <textarea name="message" placeholder="Tell us about your interest..." rows="4"></textarea>
                         </div>
+
+                        <div data-netlify-recaptcha="true"></div>
                         <button type="submit" class="btn btn-primary">Send Message</button>
-                    </form>
-                </div>
+                      </form>
             </div>
         </div>
     </section>
