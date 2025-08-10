@@ -1555,3 +1555,34 @@ html {
 @media (max-width: 640px) {
   .mvp-iframe { height: 420px; }
 } 
+/* Submit button tooltip */
+.submit-tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1f2937;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    z-index: 1000;
+    margin-bottom: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+  
+  .submit-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: #1f2937;
+  }
+  
+  /* Ensure form group has relative positioning for tooltip */
+  .form-group:has(button[type="submit"]) {
+    position: relative;
+  }

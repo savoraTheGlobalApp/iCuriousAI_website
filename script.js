@@ -98,53 +98,71 @@ const contactForm = document.querySelector('.contact-form form');
 //   });
 // }
 
-// Netlify Forms: prevent submit if reCAPTCHA not solved; preserve field values
-    if (contactForm && contactForm.hasAttribute('data-netlify')) {
-    const captchaContainer = contactForm.querySelector('[data-netlify-recaptcha]');
+    // Netlify Forms: disable submit button until reCAPTCHA is solved
+if (contactForm && contactForm.hasAttribute('data-netlify')) {
+    const submitBtn = contactForm.querySelector('button[type="submit"]');
     const errorEl = contactForm.querySelector('#captcha-error') || (() => {
-        const d = document.createElement('div');
-        d.id = 'captcha-error';
-        d.className = 'form-error';
-        d.setAttribute('aria-live', 'polite');
-        d.setAttribute('role', 'alert');
-        if (captchaContainer) captchaContainer.insertAdjacentElement('afterend', d);
-        return d;
+      const d = document.createElement('div');
+      d.id = 'captcha-error';
+      d.className = 'form-error';
+      d.setAttribute('aria-live', 'polite');
+      d.setAttribute('role', 'alert');
+      const captchaContainer = contactForm.querySelector('[data-netlify-recaptcha]');
+      if (captchaContainer) captchaContainer.insertAdjacentElement('afterend', d);
+      return d;
     })();
-
-    const solved = () => {
-        const tokenEl = contactForm.querySelector('textarea[name="g-recaptcha-response"]');
-        return !!(tokenEl && tokenEl.value.trim().length);
-    };
-
-    // Clear error when captcha gets solved
-    const clearOnSolve = () => { 
-        if (solved()) {
+  
+    // Create tooltip element
+    const tooltip = document.createElement('div');
+    tooltip.className = 'submit-tooltip';
+    tooltip.textContent = 'Please complete the reCAPTCHA first';
+    tooltip.style.display = 'none';
+    if (submitBtn) submitBtn.parentNode.appendChild(tooltip);
+  
+    // Start with button disabled
+    if (submitBtn) submitBtn.disabled = true;
+  
+    const checkCaptcha = () => {
+      const tokenEl = contactForm.querySelector('textarea[name="g-recaptcha-response"]');
+      const isSolved = !!(tokenEl && tokenEl.value.trim().length);
+      
+      if (submitBtn) {
+        submitBtn.disabled = !isSolved;
+        if (isSolved) {
+          submitBtn.style.opacity = '1';
+          submitBtn.style.cursor = 'pointer';
+          tooltip.style.display = 'none';
+        } else {
+          submitBtn.style.opacity = '0.6';
+          submitBtn.style.cursor = 'not-allowed';
+        }
+      }
+      
+      // Clear error when solved
+      if (isSolved) {
         errorEl.textContent = '';
         errorEl.style.display = 'none';
-        }
+      }
     };
-    
-    const mo = new MutationObserver(clearOnSolve);
-    mo.observe(contactForm, { subtree: true, childList: true });
-
-    // Always prevent default first, then handle manually
-    contactForm.addEventListener('submit', (e) => {
-        if (!solved()) {
-        e.preventDefault(); // Only prevent default if captcha is not solved
-        errorEl.textContent = 'Please complete the reCAPTCHA to send your message.';
-        errorEl.style.display = 'block';
-        const target = contactForm.querySelector('.g-recaptcha, [data-netlify-recaptcha]');
-        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        return false; // Don't submit
+  
+    // Add hover events for tooltip
+    if (submitBtn) {
+      submitBtn.addEventListener('mouseenter', () => {
+        if (submitBtn.disabled) {
+          tooltip.style.display = 'block';
         }
-        
-        // Only submit if reCAPTCHA is solved
-        // if (solved()) {
-        // // Submit the form programmatically
-        // contactForm.submit();
-        // }
-    });
+      });
+      
+      submitBtn.addEventListener('mouseleave', () => {
+        tooltip.style.display = 'none';
+      });
     }
+  
+    // Check immediately and then watch for changes
+    checkCaptcha();
+    const mo = new MutationObserver(checkCaptcha);
+    mo.observe(contactForm, { subtree: true, childList: true });
+  }
 
 
     // Button click handlers
