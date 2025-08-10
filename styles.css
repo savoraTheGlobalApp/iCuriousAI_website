@@ -1475,6 +1475,11 @@ html {
   color: #ef4444; /* red-500 */
   font-size: 0.9rem;
   margin-top: 8px;
+  display: none; /* Hidden by default, shown via JavaScript */
+  padding: 8px 12px;
+  background: rgba(239, 68, 68, 0.1);
+  border-radius: 6px;
+  border-left: 3px solid #ef4444;
 } 
 
 /* Founders */

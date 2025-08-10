@@ -98,36 +98,54 @@ const contactForm = document.querySelector('.contact-form form');
 //   });
 // }
 
-// Netlify Forms: show inline message if reCAPTCHA not solved; otherwise submit normally
-if (contactForm && contactForm.hasAttribute('data-netlify')) {
+// Netlify Forms: prevent submit if reCAPTCHA not solved; preserve field values
+    if (contactForm && contactForm.hasAttribute('data-netlify')) {
     const captchaContainer = contactForm.querySelector('[data-netlify-recaptcha]');
     const errorEl = contactForm.querySelector('#captcha-error') || (() => {
-      const d = document.createElement('div');
-      d.id = 'captcha-error';
-      d.className = 'form-error';
-      if (captchaContainer) captchaContainer.insertAdjacentElement('afterend', d);
-      return d;
+        const d = document.createElement('div');
+        d.id = 'captcha-error';
+        d.className = 'form-error';
+        d.setAttribute('aria-live', 'polite');
+        d.setAttribute('role', 'alert');
+        if (captchaContainer) captchaContainer.insertAdjacentElement('afterend', d);
+        return d;
     })();
-  
+
     const solved = () => {
-      const tokenEl = contactForm.querySelector('textarea[name="g-recaptcha-response"]');
-      return !!(tokenEl && tokenEl.value.trim().length);
+        const tokenEl = contactForm.querySelector('textarea[name="g-recaptcha-response"]');
+        return !!(tokenEl && tokenEl.value.trim().length);
     };
-  
-    // Clear message when captcha gets solved
-    const clearOnSolve = () => { if (solved()) errorEl.textContent = ''; };
+
+    // Clear error when captcha gets solved
+    const clearOnSolve = () => { 
+        if (solved()) {
+        errorEl.textContent = '';
+        errorEl.style.display = 'none';
+        }
+    };
+    
     const mo = new MutationObserver(clearOnSolve);
     mo.observe(contactForm, { subtree: true, childList: true });
-  
+
+    // Always prevent default first, then handle manually
     contactForm.addEventListener('submit', (e) => {
-      if (!solved()) {
-        e.preventDefault();
+        e.preventDefault(); // Always prevent default submit
+        
+        if (!solved()) {
         errorEl.textContent = 'Please complete the reCAPTCHA to send your message.';
+        errorEl.style.display = 'block';
         const target = contactForm.querySelector('.g-recaptcha, [data-netlify-recaptcha]');
         if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
+        return false; // Don't submit
+        }
+        
+        // Only submit if reCAPTCHA is solved
+        if (solved()) {
+        // Submit the form programmatically
+        contactForm.submit();
+        }
     });
-  }
+    }
 
 
     // Button click handlers
@@ -277,6 +295,13 @@ style.textContent = `
     .gradient-text {
         background-size: 200% 200%;
         animation: shimmer 3s ease-in-out infinite;
+    }
+
+    .form-error {
+      color: #ef4444;
+      font-size: 0.9rem;
+      margin-top: 8px;
+      display: none; /* Hidden by default */
     }
 `;
 
