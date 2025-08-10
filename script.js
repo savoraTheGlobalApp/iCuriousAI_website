@@ -103,35 +103,30 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (contactForm) {
         const captchaContainer = contactForm.querySelector('[data-netlify-recaptcha]');
-        let errorEl = contactForm.querySelector('#captcha-error');
+        let errorEl = document.querySelector('#captcha-error');
 
-        // Create error container if missing
         if (!errorEl) {
             errorEl = document.createElement('div');
             errorEl.id = 'captcha-error';
-            errorEl.className = 'form-error';
-            errorEl.setAttribute('aria-live', 'polite');
-            errorEl.setAttribute('role', 'alert');
             errorEl.style.color = 'red';
             errorEl.style.marginTop = '8px';
             if (captchaContainer) captchaContainer.insertAdjacentElement('afterend', errorEl);
         }
 
-        // Function to check if captcha is solved
         const solved = () => {
             const tokenEl = contactForm.querySelector('textarea[name="g-recaptcha-response"]');
             return !!(tokenEl && tokenEl.value.trim().length);
         };
 
-        // Clear error when captcha solved
-        const clearOnSolve = () => {
-            if (solved()) {
-                errorEl.textContent = '';
-                errorEl.style.display = 'none';
-            }
+        const showError = (msg) => {
+            errorEl.textContent = msg;
+            errorEl.style.display = 'block';
         };
-        const mo = new MutationObserver(clearOnSolve);
-        mo.observe(contactForm, { subtree: true, childList: true });
+
+        const hideError = () => {
+            errorEl.textContent = '';
+            errorEl.style.display = 'none';
+        };
 
         // Save inputs to sessionStorage
         const saveFormValues = () => {
@@ -148,40 +143,45 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         };
 
-        // Save on each input change
+        // Save on each change
         contactForm.querySelectorAll('input, textarea, select').forEach(input => {
             input.addEventListener('input', saveFormValues);
         });
 
-        // Restore once on page load
         restoreFormValues();
 
-        // Submit handler
-        contactForm.addEventListener('submit', (e) => {
-            e.preventDefault(); // stop native reload
+        // Mutation observer to hide error when captcha is solved
+        const mo = new MutationObserver(() => {
+            if (solved()) hideError();
+        });
+        mo.observe(contactForm, { subtree: true, childList: true });
+
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault(); // STOP native submit always
 
             if (!solved()) {
-                // Keep data in storage so fields stay filled
                 saveFormValues();
-
-                // Show error
-                errorEl.textContent = 'Please check the reCAPTCHA box before submitting.';
-                errorEl.style.display = 'block';
-
-                // Scroll to captcha
-                const target = contactForm.querySelector('.g-recaptcha, [data-netlify-recaptcha]');
-                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-                return; // Stop here, don't submit yet
+                showError('⚠ Please check the reCAPTCHA box before submitting.');
+                captchaContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
             }
 
-            // Captcha solved → clear storage and submit
-            sessionStorage.clear();
-            contactForm.submit();
+            // Send manually to Netlify only when CAPTCHA solved
+            const formData = new FormData(contactForm);
+
+            try {
+                await fetch('/', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                sessionStorage.clear();
+                window.location.href = contactForm.getAttribute('action'); // Redirect to thank-you.html
+            } catch (err) {
+                showError('Something went wrong. Please try again.');
+            }
         });
     }
-
-
 
     // Button click handlers
     document.querySelectorAll('.btn-primary').forEach(btn => {
