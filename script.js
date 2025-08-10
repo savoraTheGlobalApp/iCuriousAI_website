@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (captchaContainer) captchaContainer.insertAdjacentElement('afterend', errorEl);
         }
 
-        // Check if captcha solved
+        // Function to check if captcha is solved
         const solved = () => {
             const tokenEl = contactForm.querySelector('textarea[name="g-recaptcha-response"]');
             return !!(tokenEl && tokenEl.value.trim().length);
@@ -133,39 +133,54 @@ document.addEventListener('DOMContentLoaded', function() {
         const mo = new MutationObserver(clearOnSolve);
         mo.observe(contactForm, { subtree: true, childList: true });
 
-        // Save form values to sessionStorage
-        contactForm.querySelectorAll('input, textarea, select').forEach(input => {
-            input.addEventListener('input', () => {
+        // Save inputs to sessionStorage
+        const saveFormValues = () => {
+            contactForm.querySelectorAll('input, textarea, select').forEach(input => {
                 sessionStorage.setItem(`form_${input.name}`, input.value);
             });
+        };
+
+        // Restore inputs from sessionStorage
+        const restoreFormValues = () => {
+            contactForm.querySelectorAll('input, textarea, select').forEach(input => {
+                const saved = sessionStorage.getItem(`form_${input.name}`);
+                if (saved !== null) input.value = saved;
+            });
+        };
+
+        // Save on each input change
+        contactForm.querySelectorAll('input, textarea, select').forEach(input => {
+            input.addEventListener('input', saveFormValues);
         });
 
-        // Restore form values from sessionStorage
-        contactForm.querySelectorAll('input, textarea, select').forEach(input => {
-            const saved = sessionStorage.getItem(`form_${input.name}`);
-            if (saved) input.value = saved;
-        });
+        // Restore once on page load
+        restoreFormValues();
 
         // Submit handler
         contactForm.addEventListener('submit', (e) => {
-            e.preventDefault(); // Prevent full reload
+            e.preventDefault(); // stop native reload
 
             if (!solved()) {
-                errorEl.textContent = '⚠ Please check the reCAPTCHA box before submitting.';
+                // Keep data in storage so fields stay filled
+                saveFormValues();
+
+                // Show error
+                errorEl.textContent = 'Please check the reCAPTCHA box before submitting.';
                 errorEl.style.display = 'block';
+
+                // Scroll to captcha
                 const target = contactForm.querySelector('.g-recaptcha, [data-netlify-recaptcha]');
                 if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                return;
+
+                return; // Stop here, don't submit yet
             }
 
-            // Clear saved form values after successful submit
-            contactForm.querySelectorAll('input, textarea, select').forEach(input => {
-                sessionStorage.removeItem(`form_${input.name}`);
-            });
-
+            // Captcha solved → clear storage and submit
+            sessionStorage.clear();
             contactForm.submit();
         });
     }
+
 
 
     // Button click handlers
