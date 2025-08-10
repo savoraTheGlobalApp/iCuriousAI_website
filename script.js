@@ -129,9 +129,8 @@ const contactForm = document.querySelector('.contact-form form');
 
     // Always prevent default first, then handle manually
     contactForm.addEventListener('submit', (e) => {
-        e.preventDefault(); // Always prevent default submit
-        
         if (!solved()) {
+        e.preventDefault(); // Only prevent default if captcha is not solved
         errorEl.textContent = 'Please complete the reCAPTCHA to send your message.';
         errorEl.style.display = 'block';
         const target = contactForm.querySelector('.g-recaptcha, [data-netlify-recaptcha]');
@@ -140,10 +139,10 @@ const contactForm = document.querySelector('.contact-form form');
         }
         
         // Only submit if reCAPTCHA is solved
-        if (solved()) {
-        // Submit the form programmatically
-        contactForm.submit();
-        }
+        // if (solved()) {
+        // // Submit the form programmatically
+        // contactForm.submit();
+        // }
     });
     }
 
