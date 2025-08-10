@@ -129,22 +129,33 @@ const contactForm = document.querySelector('.contact-form form');
 
     // Always prevent default first, then handle manually
     contactForm.addEventListener('submit', (e) => {
+        e.preventDefault(); // Stop browser from wiping the form
+    
         if (!solved()) {
-        e.preventDefault(); // Only prevent default if captcha is not solved
-        errorEl.textContent = 'Please complete the reCAPTCHA to send your message.';
-        errorEl.style.display = 'block';
-        const target = contactForm.querySelector('.g-recaptcha, [data-netlify-recaptcha]');
-        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        return false; // Don't submit
+            errorEl.textContent = 'Please complete the reCAPTCHA to send your message.';
+            errorEl.style.display = 'block';
+            const target = contactForm.querySelector('.g-recaptcha, [data-netlify-recaptcha]');
+            if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            return; // Don't submit yet
         }
-        
-        // Only submit if reCAPTCHA is solved
-        // if (solved()) {
-        // // Submit the form programmatically
-        // contactForm.submit();
-        // }
+    
+        // If solved, submit programmatically
+        contactForm.submit();
     });
     }
+
+    // Save on input change
+    contactForm.querySelectorAll('input, textarea, select').forEach(input => {
+        input.addEventListener('input', () => {
+            localStorage.setItem(input.name, input.value);
+        });
+    });
+
+    // Restore on page load
+    contactForm.querySelectorAll('input, textarea, select').forEach(input => {
+        const saved = localStorage.getItem(input.name);
+        if (saved) input.value = saved;
+    });
 
 
     // Button click handlers
