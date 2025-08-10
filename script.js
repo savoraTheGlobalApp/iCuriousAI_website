@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Form submission handling
-const contactForm = document.querySelector('.contact-form form');
+// const contactForm = document.querySelector('.contact-form form');
 
 // For non‑Netlify forms only (demo behavior)
 // if (contactForm && !contactForm.hasAttribute('data-netlify')) {
@@ -99,70 +99,72 @@ const contactForm = document.querySelector('.contact-form form');
 // }
 
 // Netlify Forms: prevent submit if reCAPTCHA not solved; preserve field values
-    if (contactForm && contactForm.hasAttribute('data-netlify')) {
-    const captchaContainer = contactForm.querySelector('[data-netlify-recaptcha]');
-    let errorEl = contactForm.querySelector('#captcha-error');
+    const contactForm = document.querySelector('form[data-netlify="true"]');
 
-    // Create error container if missing
-    if (!errorEl) {
-        errorEl = document.createElement('div');
-        errorEl.id = 'captcha-error';
-        errorEl.className = 'form-error';
-        errorEl.setAttribute('aria-live', 'polite');
-        errorEl.setAttribute('role', 'alert');
-        errorEl.style.color = 'red';
-        errorEl.style.marginTop = '8px';
-        if (captchaContainer) captchaContainer.insertAdjacentElement('afterend', errorEl);
-    }
+    if (contactForm) {
+        const captchaContainer = contactForm.querySelector('[data-netlify-recaptcha]');
+        let errorEl = contactForm.querySelector('#captcha-error');
 
-    const solved = () => {
-        const tokenEl = contactForm.querySelector('textarea[name="g-recaptcha-response"]');
-        return !!(tokenEl && tokenEl.value.trim().length);
-    };
-
-    // Clear error when captcha gets solved
-    const clearOnSolve = () => { 
-        if (solved()) {
-        errorEl.textContent = '';
-        errorEl.style.display = 'none';
-        }
-    };
-    
-    const mo = new MutationObserver(clearOnSolve);
-    mo.observe(contactForm, { subtree: true, childList: true });
-
-    // Save form values to sessionStorage
-    contactForm.querySelectorAll('input, textarea, select').forEach(input => {
-        input.addEventListener('input', () => {
-            sessionStorage.setItem(`form_${input.name}`, input.value);
-        });
-    });
-
-    // Restore form values from sessionStorage
-    contactForm.querySelectorAll('input, textarea, select').forEach(input => {
-        const saved = sessionStorage.getItem(`form_${input.name}`);
-        if (saved) input.value = saved;
-    });
-
-    // Submit handler
-    contactForm.addEventListener('submit', (e) => {
-        e.preventDefault(); // Prevent full reload
-
-        if (!solved()) {
-            errorEl.textContent = '⚠ Please check the reCAPTCHA box before submitting.';
-            errorEl.style.display = 'block';
-            const target = contactForm.querySelector('.g-recaptcha, [data-netlify-recaptcha]');
-            if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            return;
+        // Create error container if missing
+        if (!errorEl) {
+            errorEl = document.createElement('div');
+            errorEl.id = 'captcha-error';
+            errorEl.className = 'form-error';
+            errorEl.setAttribute('aria-live', 'polite');
+            errorEl.setAttribute('role', 'alert');
+            errorEl.style.color = 'red';
+            errorEl.style.marginTop = '8px';
+            if (captchaContainer) captchaContainer.insertAdjacentElement('afterend', errorEl);
         }
 
-        // Clear saved form values after successful submit
+        // Check if captcha solved
+        const solved = () => {
+            const tokenEl = contactForm.querySelector('textarea[name="g-recaptcha-response"]');
+            return !!(tokenEl && tokenEl.value.trim().length);
+        };
+
+        // Clear error when captcha solved
+        const clearOnSolve = () => {
+            if (solved()) {
+                errorEl.textContent = '';
+                errorEl.style.display = 'none';
+            }
+        };
+        const mo = new MutationObserver(clearOnSolve);
+        mo.observe(contactForm, { subtree: true, childList: true });
+
+        // Save form values to sessionStorage
         contactForm.querySelectorAll('input, textarea, select').forEach(input => {
-            sessionStorage.removeItem(`form_${input.name}`);
+            input.addEventListener('input', () => {
+                sessionStorage.setItem(`form_${input.name}`, input.value);
+            });
         });
 
-        contactForm.submit();
-    });
+        // Restore form values from sessionStorage
+        contactForm.querySelectorAll('input, textarea, select').forEach(input => {
+            const saved = sessionStorage.getItem(`form_${input.name}`);
+            if (saved) input.value = saved;
+        });
+
+        // Submit handler
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault(); // Prevent full reload
+
+            if (!solved()) {
+                errorEl.textContent = '⚠ Please check the reCAPTCHA box before submitting.';
+                errorEl.style.display = 'block';
+                const target = contactForm.querySelector('.g-recaptcha, [data-netlify-recaptcha]');
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
+
+            // Clear saved form values after successful submit
+            contactForm.querySelectorAll('input, textarea, select').forEach(input => {
+                sessionStorage.removeItem(`form_${input.name}`);
+            });
+
+            contactForm.submit();
+        });
     }
 
 
