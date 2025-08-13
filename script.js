@@ -78,8 +78,16 @@ document.addEventListener('DOMContentLoaded', function() {
         observer.observe(el);
     });
 
-    // Form submission handling
-    const contactForm = document.querySelector('.contact-form form');
+    // Form submission handling - Debug all possible selectors
+    console.log('=== Form Debugging ===');
+    console.log('All forms on page:', document.querySelectorAll('form'));
+    console.log('Forms with name="contact":', document.querySelectorAll('form[name="contact"]'));
+    console.log('Forms with data-netlify:', document.querySelectorAll('form[data-netlify]'));
+    console.log('Forms in .contact-form:', document.querySelectorAll('.contact-form form'));
+
+    const contactForm = document.querySelector('form[name="contact"]');
+    console.log('Selected form:', contactForm);
+    console.log('Form has data-netlify:', contactForm?.hasAttribute('data-netlify'));
 
     // Form handling: Supabase + Netlify backup
     if (contactForm && contactForm.hasAttribute('data-netlify')) {
