@@ -1,3 +1,11 @@
+document.addEventListener("DOMContentLoaded", () => {
+    const form = document.querySelector("form[name='contact']");
+    if (form && !form.hasAttribute("data-netlify")) {
+      form.setAttribute("data-netlify", "true");
+      console.log("Restored data-netlify attribute to form");
+    }
+  });
+
 // Navigation functionality
 document.addEventListener('DOMContentLoaded', function() {
     const hamburger = document.querySelector('.hamburger');
