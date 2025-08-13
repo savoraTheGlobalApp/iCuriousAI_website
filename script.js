@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('Forms with data-netlify:', document.querySelectorAll('form[data-netlify]'));
     console.log('Forms in .contact-form:', document.querySelectorAll('.contact-form form'));
 
-    const contactForm = document.querySelector('form[data-netlify="true"]');
+    const contactForm = document.querySelector('.contact-form form');
     console.log('Selected form:', contactForm);
     console.log('Form has data-netlify:', contactForm?.hasAttribute('data-netlify'));
 
