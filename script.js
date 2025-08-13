@@ -83,6 +83,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Form handling: Supabase + Netlify backup
     if (contactForm && contactForm.hasAttribute('data-netlify')) {
+    console.log('Contact form found and Netlify attribute detected'); // Debug log
+
     const submitBtn = contactForm.querySelector('button[type="submit"]');
     const errorEl = contactForm.querySelector('#captcha-error') || (() => {
         const d = document.createElement('div');
@@ -125,6 +127,7 @@ document.addEventListener('DOMContentLoaded', function() {
         errorEl.textContent = '';
         errorEl.style.display = 'none';
         }
+        return isSolved;
     };
 
     // Add hover events for tooltip
@@ -140,15 +143,22 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Handle form submission
+    // Handle form submission - CRITICAL: This must be attached
     contactForm.addEventListener('submit', async (e) => {
+        console.log('Form submit event triggered'); // Debug log
         e.preventDefault();
+        e.stopPropagation();
+        
+        console.log('Form submission prevented'); // Debug log
         
         if (!checkCaptcha()) {
+        console.log('reCAPTCHA not solved'); // Debug log
         errorEl.textContent = 'Please complete the reCAPTCHA to send your message.';
         errorEl.style.display = 'block';
         return false;
         }
+
+        console.log('reCAPTCHA solved, proceeding with submission'); // Debug log
 
         const submitBtn = contactForm.querySelector('button[type="submit"]');
         const originalText = submitBtn.textContent;
@@ -165,6 +175,8 @@ document.addEventListener('DOMContentLoaded', function() {
             message: formData.get('message')
         };
 
+        console.log('Sending payload to function:', payload); // Debug log
+
         // Submit to Supabase via Netlify Function
         const response = await fetch('/.netlify/functions/submit-contact', {
             method: 'POST',
@@ -172,9 +184,13 @@ document.addEventListener('DOMContentLoaded', function() {
             body: JSON.stringify(payload)
         });
 
+        console.log('Function response status:', response.status); // Debug log
+
         const result = await response.json();
+        console.log('Function response result:', result); // Debug log
 
         if (response.ok && result.success) {
+            console.log('Submission successful, redirecting'); // Debug log
             // Success - redirect to thank you page
             window.location.href = '/thank-you.html';
         } else {
@@ -194,7 +210,11 @@ document.addEventListener('DOMContentLoaded', function() {
     checkCaptcha();
     const mo = new MutationObserver(checkCaptcha);
     mo.observe(contactForm, { subtree: true, childList: true });
-    }
+    
+    console.log('Form handler setup complete'); // Debug log
+    } else {
+    console.log('Contact form not found or missing data-netlify attribute'); // Debug log
+}
 
     // Button click handlers
     document.querySelectorAll('.btn-primary').forEach(btn => {
