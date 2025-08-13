@@ -5,14 +5,12 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log("Restored data-netlify attribute to form");
     }
   });
-
+  
 // Navigation functionality
 document.addEventListener('DOMContentLoaded', function() {
     const hamburger = document.querySelector('.hamburger');
     const navMenu = document.querySelector('.nav-menu');
     const navbar = document.querySelector('.navbar');
-    const netlifyForms = document.querySelectorAll("[data-netlify]");
-    console.log("Forms with data-netlify:", netlifyForms);
 
     // Mobile menu toggle
     hamburger.addEventListener('click', function() {
@@ -88,151 +86,110 @@ document.addEventListener('DOMContentLoaded', function() {
         observer.observe(el);
     });
 
-    // Form submission handling - Debug all possible selectors
-    console.log('=== Form Debugging ===');
-    console.log('All forms on page:', document.querySelectorAll('form'));
-    console.log('Forms with name="contact":', document.querySelectorAll('form[name="contact"]'));
-    console.log('Forms with data-netlify:', document.querySelectorAll('form[data-netlify]'));
-    console.log('Forms in .contact-form:', document.querySelectorAll('.contact-form form'));
+    // Form submission handling
+// const contactForm = document.querySelector('.contact-form form');
 
-    const contactForm = document.querySelector('form[name="contact"][data-netlify="true"]');
-    console.log('Selected form:', contactForm);
-    console.log('Form has data-netlify:', contactForm?.hasAttribute('data-netlify'));
+// For non‑Netlify forms only (demo behavior)
+// if (contactForm && !contactForm.hasAttribute('data-netlify')) {
+//   contactForm.addEventListener('submit', function(e) {
+//     e.preventDefault();
+//     const submitBtn = this.querySelector('button[type="submit"]');
+//     const originalText = submitBtn.textContent;
+//     submitBtn.textContent = 'Sending...';
+//     submitBtn.disabled = true;
+//     setTimeout(() => {
+//       alert('Thank you for your interest! We\'ll get back to you soon.');
+//       this.reset();
+//       submitBtn.textContent = originalText;
+//       submitBtn.disabled = false;
+//     }, 2000);
+//   });
+// }
 
-    // Form handling: Supabase + Netlify backup
-    if (contactForm && contactForm.hasAttribute('data-netlify')) {
-    console.log('Contact form found and Netlify attribute detected'); // Debug log
+// Netlify Forms: prevent submit if reCAPTCHA not solved; preserve field values
+    const contactForm = document.querySelector('form[data-netlify="true"]');
 
-    const submitBtn = contactForm.querySelector('button[type="submit"]');
-    const errorEl = contactForm.querySelector('#captcha-error') || (() => {
-        const d = document.createElement('div');
-        d.id = 'captcha-error';
-        d.className = 'form-error';
-        d.setAttribute('aria-live', 'polite');
-        d.setAttribute('role', 'alert');
+    if (contactForm) {
         const captchaContainer = contactForm.querySelector('[data-netlify-recaptcha]');
-        if (captchaContainer) captchaContainer.insertAdjacentElement('afterend', d);
-        return d;
-    })();
+        let errorEl = document.querySelector('#captcha-error');
 
-    // Create tooltip element
-    const tooltip = document.createElement('div');
-    tooltip.className = 'submit-tooltip';
-    tooltip.textContent = 'Please complete the reCAPTCHA first';
-    tooltip.style.display = 'none';
-    if (submitBtn) submitBtn.parentNode.appendChild(tooltip);
-
-    // Start with button disabled
-    if (submitBtn) submitBtn.disabled = true;
-
-    const checkCaptcha = () => {
-        const tokenEl = contactForm.querySelector('textarea[name="g-recaptcha-response"]');
-        const isSolved = !!(tokenEl && tokenEl.value.trim().length);
-        
-        if (submitBtn) {
-        submitBtn.disabled = !isSolved;
-        if (isSolved) {
-            submitBtn.style.opacity = '1';
-            submitBtn.style.cursor = 'pointer';
-            tooltip.style.display = 'none';
-        } else {
-            submitBtn.style.opacity = '0.6';
-            submitBtn.style.cursor = 'not-allowed';
-        }
-        }
-        
-        if (isSolved) {
-        errorEl.textContent = '';
-        errorEl.style.display = 'none';
-        }
-        return isSolved;
-    };
-
-    // Add hover events for tooltip
-    if (submitBtn) {
-        submitBtn.addEventListener('mouseenter', () => {
-        if (submitBtn.disabled) {
-            tooltip.style.display = 'block';
-        }
-        });
-        
-        submitBtn.addEventListener('mouseleave', () => {
-        tooltip.style.display = 'none';
-        });
-    }
-
-    // Handle form submission - CRITICAL: This must be attached
-    contactForm.addEventListener('submit', async (e) => {
-        console.log('Form submit event triggered'); // Debug log
-        e.preventDefault();
-        e.stopPropagation();
-        
-        console.log('Form submission prevented'); // Debug log
-        
-        if (!checkCaptcha()) {
-        console.log('reCAPTCHA not solved'); // Debug log
-        errorEl.textContent = 'Please complete the reCAPTCHA to send your message.';
-        errorEl.style.display = 'block';
-        return false;
+        if (!errorEl) {
+            errorEl = document.createElement('div');
+            errorEl.id = 'captcha-error';
+            errorEl.style.color = 'red';
+            errorEl.style.marginTop = '8px';
+            if (captchaContainer) captchaContainer.insertAdjacentElement('afterend', errorEl);
         }
 
-        console.log('reCAPTCHA solved, proceeding with submission'); // Debug log
-
-        const submitBtn = contactForm.querySelector('button[type="submit"]');
-        const originalText = submitBtn.textContent;
-        submitBtn.textContent = 'Sending...';
-        submitBtn.disabled = true;
-
-        try {
-        // Get form data
-        const formData = new FormData(contactForm);
-        const payload = {
-            name: formData.get('name'),
-            email: formData.get('email'),
-            role: formData.get('role'),
-            message: formData.get('message')
+        const solved = () => {
+            const tokenEl = contactForm.querySelector('textarea[name="g-recaptcha-response"]');
+            return !!(tokenEl && tokenEl.value.trim().length);
         };
 
-        console.log('Sending payload to function:', payload); // Debug log
+        const showError = (msg) => {
+            errorEl.textContent = msg;
+            errorEl.style.display = 'block';
+        };
 
-        // Submit to Supabase via Netlify Function
-        const response = await fetch('/.netlify/functions/submit-contact', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
+        const hideError = () => {
+            errorEl.textContent = '';
+            errorEl.style.display = 'none';
+        };
+
+        // Save inputs to sessionStorage
+        const saveFormValues = () => {
+            contactForm.querySelectorAll('input, textarea, select').forEach(input => {
+                sessionStorage.setItem(`form_${input.name}`, input.value);
+            });
+        };
+
+        // Restore inputs from sessionStorage
+        const restoreFormValues = () => {
+            contactForm.querySelectorAll('input, textarea, select').forEach(input => {
+                const saved = sessionStorage.getItem(`form_${input.name}`);
+                if (saved !== null) input.value = saved;
+            });
+        };
+
+        // Save on each change
+        contactForm.querySelectorAll('input, textarea, select').forEach(input => {
+            input.addEventListener('input', saveFormValues);
         });
 
-        console.log('Function response status:', response.status); // Debug log
+        restoreFormValues();
 
-        const result = await response.json();
-        console.log('Function response result:', result); // Debug log
+        // Mutation observer to hide error when captcha is solved
+        const mo = new MutationObserver(() => {
+            if (solved()) hideError();
+        });
+        mo.observe(contactForm, { subtree: true, childList: true });
 
-        if (response.ok && result.success) {
-            console.log('Submission successful, redirecting'); // Debug log
-            // Success - redirect to thank you page
-            window.location.href = '/thank-you.html';
-        } else {
-            throw new Error(result.error || 'Submission failed');
-        }
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault(); // STOP native submit always
 
-        } catch (error) {
-        console.error('Submission error:', error);
-        errorEl.textContent = 'Something went wrong. Please try again.';
-        errorEl.style.display = 'block';
-        submitBtn.textContent = originalText;
-        submitBtn.disabled = false;
-        }
-    });
+            if (!solved()) {
+                saveFormValues();
+                showError('⚠ Please check the reCAPTCHA box before submitting.');
+                captchaContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
 
-    // Check immediately and then watch for changes
-    checkCaptcha();
-    const mo = new MutationObserver(checkCaptcha);
-    mo.observe(contactForm, { subtree: true, childList: true });
-    
-    console.log('Form handler setup complete'); // Debug log
-    } else {
-    console.log('Contact form not found or missing data-netlify attribute'); // Debug log
-}
+            // Send manually to Netlify only when CAPTCHA solved
+            const formData = new FormData(contactForm);
+
+            try {
+                await fetch('/', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                sessionStorage.clear();
+                window.location.href = contactForm.getAttribute('action'); // Redirect to thank-you.html
+            } catch (err) {
+                showError('Something went wrong. Please try again.');
+            }
+        });
+    }
 
     // Button click handlers
     document.querySelectorAll('.btn-primary').forEach(btn => {
