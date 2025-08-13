@@ -3,6 +3,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const hamburger = document.querySelector('.hamburger');
     const navMenu = document.querySelector('.nav-menu');
     const navbar = document.querySelector('.navbar');
+    const netlifyForms = document.querySelectorAll("[data-netlify]");
+    console.log("Forms with data-netlify:", netlifyForms);
 
     // Mobile menu toggle
     hamburger.addEventListener('click', function() {
