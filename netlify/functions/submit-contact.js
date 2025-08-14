@@ -23,7 +23,8 @@ export async function handler(event) {
       return { statusCode: 400, body: JSON.stringify({ error: "Invalid request body" }) };
     }
   
-    const { name, email, role, message, recaptchaToken } = body;
+    const { name, email, role, message } = body;
+    const recaptchaToken = body['g-recaptcha-response'];
   
     // Verify reCAPTCHA
     console.log("Verifying reCAPTCHA...");

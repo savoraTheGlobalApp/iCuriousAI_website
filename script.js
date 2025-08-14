@@ -109,9 +109,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const data = await res.json();
       
             if (data.success) {
-              alert("Thank you! Your message has been sent.");
-              contactForm.reset();
-              grecaptcha.reset();
+              window.location.href = "/thank-you.html";
             } else {
               alert("Error: " + (data.error || "Something went wrong"));
             }
