@@ -8,8 +8,16 @@ export async function handler(event) {
   
     let body;
     try {
-      body = JSON.parse(event.body);
-      console.log("Parsed body:", body);
+        const contentType = event.headers["content-type"] || "";
+        if (contentType.includes("application/json")) {
+            body = JSON.parse(event.body);
+        } else if (contentType.includes("application/x-www-form-urlencoded")) {
+            const querystring = require("querystring");
+            body = querystring.parse(event.body);
+        } else {
+            throw new Error("Unsupported content type");
+        }        
+        console.log("Parsed body:", body);
     } catch (err) {
       console.error("Error parsing body:", err);
       return { statusCode: 400, body: JSON.stringify({ error: "Invalid request body" }) };
