@@ -1,11 +1,3 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const form = document.querySelector("form[name='contact']");
-    if (form && !form.hasAttribute("data-netlify")) {
-      form.setAttribute("data-netlify", "true");
-      console.log("Restored data-netlify attribute to form");
-    }
-  });
-  
 // Navigation functionality
 document.addEventListener('DOMContentLoaded', function() {
     const hamburger = document.querySelector('.hamburger');
@@ -86,110 +78,51 @@ document.addEventListener('DOMContentLoaded', function() {
         observer.observe(el);
     });
 
-    // Form submission handling
-// const contactForm = document.querySelector('.contact-form form');
-
-// For non‑Netlify forms only (demo behavior)
-// if (contactForm && !contactForm.hasAttribute('data-netlify')) {
-//   contactForm.addEventListener('submit', function(e) {
-//     e.preventDefault();
-//     const submitBtn = this.querySelector('button[type="submit"]');
-//     const originalText = submitBtn.textContent;
-//     submitBtn.textContent = 'Sending...';
-//     submitBtn.disabled = true;
-//     setTimeout(() => {
-//       alert('Thank you for your interest! We\'ll get back to you soon.');
-//       this.reset();
-//       submitBtn.textContent = originalText;
-//       submitBtn.disabled = false;
-//     }, 2000);
-//   });
-// }
-
-// Netlify Forms: prevent submit if reCAPTCHA not solved; preserve field values
-    const contactForm = document.querySelector('form[data-netlify="true"]');
-
-    if (contactForm) {
-        const captchaContainer = contactForm.querySelector('[data-netlify-recaptcha]');
-        let errorEl = document.querySelector('#captcha-error');
-
-        if (!errorEl) {
-            errorEl = document.createElement('div');
-            errorEl.id = 'captcha-error';
-            errorEl.style.color = 'red';
-            errorEl.style.marginTop = '8px';
-            if (captchaContainer) captchaContainer.insertAdjacentElement('afterend', errorEl);
-        }
-
-        const solved = () => {
-            const tokenEl = contactForm.querySelector('textarea[name="g-recaptcha-response"]');
-            return !!(tokenEl && tokenEl.value.trim().length);
-        };
-
-        const showError = (msg) => {
-            errorEl.textContent = msg;
-            errorEl.style.display = 'block';
-        };
-
-        const hideError = () => {
-            errorEl.textContent = '';
-            errorEl.style.display = 'none';
-        };
-
-        // Save inputs to sessionStorage
-        const saveFormValues = () => {
-            contactForm.querySelectorAll('input, textarea, select').forEach(input => {
-                sessionStorage.setItem(`form_${input.name}`, input.value);
+    document.addEventListener("DOMContentLoaded", () => {
+        const contactForm = document.getElementById("contactForm");
+      
+        contactForm.addEventListener("submit", async (e) => {
+          e.preventDefault();
+      
+          const recaptchaToken = grecaptcha.getResponse();
+          if (!recaptchaToken) {
+            alert("Please complete the reCAPTCHA.");
+            return;
+          }
+      
+          const formData = new FormData(contactForm);
+          const payload = {
+            name: formData.get("name"),
+            email: formData.get("email"),
+            role: formData.get("role"),
+            message: formData.get("message"),
+            recaptchaToken
+          };
+      
+          try {
+            const res = await fetch("/.netlify/functions/submit-contact", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(payload)
             });
-        };
-
-        // Restore inputs from sessionStorage
-        const restoreFormValues = () => {
-            contactForm.querySelectorAll('input, textarea, select').forEach(input => {
-                const saved = sessionStorage.getItem(`form_${input.name}`);
-                if (saved !== null) input.value = saved;
-            });
-        };
-
-        // Save on each change
-        contactForm.querySelectorAll('input, textarea, select').forEach(input => {
-            input.addEventListener('input', saveFormValues);
-        });
-
-        restoreFormValues();
-
-        // Mutation observer to hide error when captcha is solved
-        const mo = new MutationObserver(() => {
-            if (solved()) hideError();
-        });
-        mo.observe(contactForm, { subtree: true, childList: true });
-
-        contactForm.addEventListener('submit', async (e) => {
-            e.preventDefault(); // STOP native submit always
-
-            if (!solved()) {
-                saveFormValues();
-                showError('⚠ Please check the reCAPTCHA box before submitting.');
-                captchaContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                return;
+      
+            const data = await res.json();
+      
+            if (data.success) {
+              alert("Thank you! Your message has been sent.");
+              contactForm.reset();
+              grecaptcha.reset();
+            } else {
+              alert("Error: " + (data.error || "Something went wrong"));
             }
-
-            // Send manually to Netlify only when CAPTCHA solved
-            const formData = new FormData(contactForm);
-
-            try {
-                await fetch('/', {
-                    method: 'POST',
-                    body: formData
-                });
-
-                sessionStorage.clear();
-                window.location.href = contactForm.getAttribute('action'); // Redirect to thank-you.html
-            } catch (err) {
-                showError('Something went wrong. Please try again.');
-            }
+          } catch (err) {
+            console.error(err);
+            alert("Something went wrong. Please try again.");
+          }
         });
-    }
+      });
+      
+      
 
     // Button click handlers
     document.querySelectorAll('.btn-primary').forEach(btn => {

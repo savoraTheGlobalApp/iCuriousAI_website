@@ -44,10 +44,7 @@
         </div>
 
         <div class="contact-form">
-          <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/thank-you.html">
-            <input type="hidden" name="form-name" value="contact" />
-            <p hidden><label>Don't fill this out if you're human: <input name="bot-field" /></label></p>
-
+          <form name="contact" id="contactForm">
             <div class="form-group">
               <input type="text" name="name" placeholder="Your Name" required>
             </div>
@@ -69,9 +66,10 @@
             <div class="form-group">
               <textarea name="message" placeholder="Tell us about your interest..." rows="4"></textarea>
             </div>
-
-            <div data-netlify-recaptcha="true"></div>
-            <div id="captcha-error" class="form-error" aria-live="polite" role="alert"></div>
+          
+            <!-- Google reCAPTCHA -->
+            <div class="g-recaptcha" data-sitekey="6LcEV6YrAAAAAEL5ODYA_oSSprvXuKYqutm8fpHZ"></div>
+          
             <button type="submit" class="btn btn-primary">Send Message</button>
           </form>
         </div>
