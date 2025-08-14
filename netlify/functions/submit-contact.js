@@ -67,6 +67,10 @@ export async function handler(event) {
     const data = await supabaseRes.json();
     console.log("Supabase insert success:", data);
   
-    return { statusCode: 200, body: JSON.stringify({ success: true, data }) };
+    return {
+        statusCode: 302,
+        headers: { Location: "/thank-you.html" },
+        body: ""
+      };
   }
   
