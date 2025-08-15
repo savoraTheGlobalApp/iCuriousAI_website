@@ -130,7 +130,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const formData = new FormData(waitlistForm);
         const payload = {
             name: formData.get("name"),
-            email: formData.get("email")
+            email: formData.get("email"),
+            mobile: formData.get("mobile")
         };
     
         try {
