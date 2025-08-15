@@ -119,7 +119,39 @@ document.addEventListener('DOMContentLoaded', function() {
           }
         });
       });
-      
+
+
+    document.addEventListener("DOMContentLoaded", () => {
+    const waitlistForm = document.getElementById("waitlistForm");
+    if (waitlistForm) {
+        waitlistForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+    
+        const formData = new FormData(waitlistForm);
+        const payload = {
+            name: formData.get("name"),
+            email: formData.get("email")
+        };
+    
+        try {
+            const res = await fetch("/.netlify/functions/waitlist-signup", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+            });
+            const data = await res.json();
+            if (data.success) {
+                window.location.href = "/thank-you.html";
+            } else {
+                alert("Error: " + (data.error || "Something went wrong"));
+            }
+        } catch (err) {
+            console.error(err);
+            alert("Something went wrong. Please try again.");
+        }
+        });
+    }
+    });
       
 
     // Button click handlers
