@@ -19,7 +19,7 @@ export async function handler(event) {
       return { statusCode: 400, body: JSON.stringify({ error: "Invalid request body" }) };
     }
   
-    const { email, name } = body;
+    const { name, email, mobile } = body;
     if (!email) {
       return { statusCode: 400, body: JSON.stringify({ error: "Email is required" }) };
     }
@@ -33,7 +33,7 @@ export async function handler(event) {
         "Authorization": `Bearer ${process.env.SUPABASE_ANON_KEY}`,
         "Prefer": "return=representation"
       },
-      body: JSON.stringify({ name, email })
+      body: JSON.stringify({ name, email, mobile })
     });
   
     if (!supabaseRes.ok) {
