@@ -854,10 +854,24 @@ body {
         transition: 0.3s;
         box-shadow: var(--shadow-lg);
         padding: 2rem 0;
+        gap: 1.5rem; /* Add spacing between menu items */
     }
 
     .nav-menu.active {
         left: 0;
+    }
+
+    .nav-menu a {
+        padding: 1rem 2rem; /* Add padding to make items more clickable */
+        font-size: 1.1rem; /* Slightly larger font for better readability */
+        border-radius: 0.5rem; /* Add rounded corners */
+        transition: all 0.3s ease;
+        margin: 0 1rem; /* Add horizontal margin */
+    }
+
+    .nav-menu a:hover {
+        background-color: var(--bg-secondary); /* Add hover background */
+        color: var(--primary-color);
     }
 
     .hero-container {
@@ -1939,16 +1953,17 @@ html {
 
 /* Responsive navigation adjustments */
 @media (max-width: 768px) {
-  .nav-menu {
-    flex-direction: column;
-    gap: 0;
-  }
-  
-  .nav-cta {
-    margin-top: 10px;
-    text-align: center;
-    padding: 10px 20px !important;
-  }
+    .nav-menu {
+        flex-direction: column;
+        gap: 1.5rem; /* Ensure consistent spacing */
+    }
+    
+    .nav-cta {
+        margin-top: 1.5rem; /* Increase top margin for CTA button */
+        text-align: center;
+        padding: 12px 24px !important; /* Slightly larger padding */
+        font-size: 1.1rem; /* Larger font size */
+    }
 } 
 
 /* Social Links Hover Effects */
