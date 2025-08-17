@@ -1656,7 +1656,7 @@ html {
               radial-gradient(1200px 800px at 50% 90%, rgba(34,211,238,.25), transparent 60%),
               #f8fafc;
   overflow: hidden;
-  padding: 60px 0 40px 0; /* Reduced from 80px to move content up */
+  padding: 50px 0 40px 0; /* Reduced from 60px to move content up a bit more */
 }
 
 .waitlist-content {
@@ -1666,7 +1666,7 @@ html {
   padding: 20px;
   position: relative;
   z-index: 2;
-  margin-top: 1rem; /* Reduced from 2rem to move content up */
+  margin-top: 0.5rem; /* Reduced from 1rem to move content up a bit more */
 }
 
 .waitlist-icon {
@@ -1843,7 +1843,7 @@ html {
 /* Responsive Design */
 @media (max-width: 768px) {
   .waitlist-hero {
-    padding: 70px 0 30px 0; /* Reduced from 100px to move content up */
+    padding: 60px 0 30px 0; /* Reduced from 70px to move content up a bit more */
     min-height: 100vh;
     display: flex;
     align-items: center;
@@ -1852,7 +1852,7 @@ html {
   
   .waitlist-content {
     padding: 15px;
-    margin-top: 1.5rem; /* Reduced from 3rem to move content up */
+    margin-top: 1rem; /* Reduced from 1.5rem to move content up a bit more */
   }
   
   .waitlist-icon {
@@ -1878,12 +1878,12 @@ html {
 
 @media (max-width: 480px) {
   .waitlist-hero {
-    padding: 80px 0 20px 0; /* Reduced from 120px to move content up */
+    padding: 70px 0 20px 0; /* Reduced from 80px to move content up a bit more */
   }
   
   .waitlist-content {
     padding: 12px;
-    margin-top: 2rem; /* Reduced from 4rem to move content up */
+    margin-top: 1.5rem; /* Reduced from 2rem to move content up a bit more */
   }
   
   .waitlist-icon {
@@ -1921,11 +1921,11 @@ html {
 
 @media (max-width: 360px) {
   .waitlist-hero {
-    padding: 90px 0 20px 0; /* Reduced from 140px to move content up */
+    padding: 80px 0 20px 0; /* Reduced from 90px to move content up a bit more */
   }
   
   .waitlist-content {
-    margin-top: 2.5rem; /* Reduced from 5rem to move content up */
+    margin-top: 2rem; /* Reduced from 2.5rem to move content up a bit more */
   }
   
   .waitlist-form-container {
