@@ -71,6 +71,13 @@ body {
     gap: 0.5rem;
     font-weight: 700;
     color: var(--primary-color);
+    text-decoration: none; /* Remove underline from link */
+    transition: all 0.3s ease; /* Add smooth transition */
+}
+
+.nav-logo:hover {
+    transform: translateY(-1px); /* Subtle hover effect */
+    color: var(--primary-color); /* Maintain color on hover */
 }
 
 .nav-logo .logo-image {
@@ -90,6 +97,12 @@ body {
     align-items: center !important;
     font-weight: 700 !important;
     margin-bottom: 1rem !important;
+    text-decoration: none; /* Remove underline from link */
+    transition: all 0.3s ease; /* Add smooth transition */
+}
+
+.footer-logo:hover {
+    transform: translateY(-1px); /* Subtle hover effect */
 }
 
 .footer-logo .logo-text {
