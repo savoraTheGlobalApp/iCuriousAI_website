@@ -20,6 +20,7 @@
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
     --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    --nav-height: 70px; /* fixed navbar approximate height for offsets */
 }
 
 body {
@@ -811,53 +812,70 @@ body {
 .vision {
     padding: 6rem 0;
     background: var(--bg-secondary);
-}
-
-.vision-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-}
-
-.vision-card {
-    background: white;
-    padding: 2rem;
-    border-radius: 1rem;
-    box-shadow: var(--shadow-md);
-    text-align: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.vision-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-xl);
-}
-
-.vision-icon {
-    width: 80px;
-    height: 80px;
-    background: var(--primary-color);
-    border-radius: 50%;
+    min-height: calc(100vh - var(--nav-height));
     display: flex;
     align-items: center;
-    justify-content: center;
-    margin: 0 auto 1.5rem;
+    scroll-margin-top: var(--nav-height);
 }
 
-.vision-icon i {
-    font-size: 2rem;
-    color: white;
+/* New aesthetic vision presentation */
+.vision-tagline {
+    font-weight: 700;
+    color: var(--primary-color);
 }
 
-.vision-card h3 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
+.vision-statement {
+    position: relative;
+    max-width: 900px;
+    margin: 0 auto;
+    background: linear-gradient(135deg, rgba(34,197,94,0.08) 0%, rgba(16,185,129,0.08) 55%, rgba(245,158,11,0.10) 100%);
+    border: 1px solid rgba(15,23,42,0.08);
+    box-shadow: 0 20px 45px rgba(15,23,42,.08), 0 6px 20px rgba(34,197,94,.12);
+    border-radius: 16px;
+    padding: clamp(1.25rem, 2.5vw, 2rem) clamp(1.25rem, 3vw, 2.25rem);
+    text-align: center;
 }
 
-.vision-card p {
-    color: var(--text-secondary);
-    line-height: 1.6;
+@media (max-width: 768px) {
+    .vision {
+        padding: 4rem 0; /* reduce padding on small screens to keep full view */
+        min-height: calc(100vh - var(--nav-height));
+    }
+}
+
+.vision-statement .quote-mark {
+    position: absolute;
+    top: -18px;
+    left: 24px;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: var(--secondary-color);
+    color: #111827;
+    display: grid;
+    place-items: center;
+    font-size: 20px;
+    box-shadow: 0 10px 24px rgba(245,158,11,.35);
+}
+
+.vision-statement .quote-mark i {
+    color: #111827;
+}
+
+.vision-statement p {
+    font-size: clamp(1.25rem, 2.4vw, 1.85rem);
+    line-height: 1.5;
+    color: #0f172a; /* slate-900 for strong contrast on soft gradient */
+    font-weight: 700;
+}
+
+@media (max-width: 640px) {
+    .vision-statement .quote-mark {
+        left: 16px;
+        width: 36px;
+        height: 36px;
+        font-size: 18px;
+    }
 }
 
 /* Features Section */
