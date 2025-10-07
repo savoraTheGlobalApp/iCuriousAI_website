@@ -211,8 +211,25 @@ body {
     display: flex;
     align-items: center;
     position: relative;
-    background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 50%, #f0fdf4 100%);
+    /* Keep image crisp: set image as base, apply overlay via ::before to avoid blending artifacts */
+    background-image: url('images/icuriousAI_background_image.png');
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
     overflow: hidden;
+}
+
+/* Soft overlay for readability without washing out colors */
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: linear-gradient(135deg, rgba(240, 253, 244, 0.12) 0%, rgba(236, 253, 245, 0.10) 50%, rgba(240, 253, 244, 0.12) 100%);
+    pointer-events: none;
+    z-index: 0; /* sits above background image, below orbs/content */
 }
 
 .hero-container {
@@ -259,6 +276,7 @@ body {
     line-height: 1.1;
     margin-bottom: 1.5rem;
     color: var(--text-primary);
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     margin-left: auto;
     margin-right: auto;
 }
@@ -346,6 +364,7 @@ body {
     margin-bottom: 2rem;
     line-height: 1.6;
     max-width: 500px;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
 }
 
 /* Hero Benefits */
