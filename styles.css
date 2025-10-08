@@ -1316,9 +1316,10 @@ body {
 
     /* Use phone-specific hero background on mobile for best fit */
     .hero {
-        background-image: url('images/icuriousAI_phone_background_image.png');
+        background-image: url('images/icuriousAI_phone_background_image.webp');
         background-size: cover;
         background-position: center top;
+        transition: background-image 0.3s ease;
     }
 
     .hero-badge {

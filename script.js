@@ -243,13 +243,19 @@ document.addEventListener('DOMContentLoaded', function() {
     function loadHighResBackground() {
         const hero = document.querySelector('.hero');
         if (hero) {
+            // Determine which background to load based on screen size
+            const isMobile = window.innerWidth <= 768;
+            const imagePath = isMobile 
+                ? 'images/icuriousAI_phone_background_image.png'
+                : 'images/icuriousAI_background_image.png';
+            
             // Preload the high-resolution PNG image
             const img = new Image();
             img.onload = function() {
                 // Seamlessly switch to high-res image once loaded
-                hero.style.backgroundImage = 'url(images/icuriousAI_background_image.png)';
+                hero.style.backgroundImage = `url(${imagePath})`;
             };
-            img.src = 'images/icuriousAI_background_image.png';
+            img.src = imagePath;
         }
     }
 
