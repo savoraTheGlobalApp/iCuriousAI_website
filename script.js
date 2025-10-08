@@ -167,28 +167,17 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Typing animation for hero title
-    function typeWriter(element, text, speed = 100) {
-        let i = 0;
-        element.innerHTML = '';
-        
-        function type() {
-            if (i < text.length) {
-                element.innerHTML += text.charAt(i);
-                i++;
-                setTimeout(type, speed);
-            }
-        }
-        type();
-    }
-
-    // Initialize typing animation when page loads
-    const heroTitle = document.querySelector('.hero-title');
-    if (heroTitle) {
-        const originalText = heroTitle.textContent;
+    // Segmented slide-in animation for hero title (inspired by modern hero patterns like Pixa, adapted uniquely)
+    const titlePart1 = document.querySelector('.title-part-1');
+    const titlePart2 = document.querySelector('.title-part-2');
+    if (titlePart1 && titlePart2) {
+        // add vertical slide animation classes with a graceful stagger
         setTimeout(() => {
-            typeWriter(heroTitle, originalText, 50);
-        }, 500);
+            titlePart1.classList.add('animate-in-left');
+            setTimeout(() => {
+                titlePart2.classList.add('animate-in-right');
+            }, 420); // slower, more elegant stagger
+        }, 300);
     }
 
     // Counter animation for stats

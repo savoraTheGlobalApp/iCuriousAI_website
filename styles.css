@@ -20,6 +20,7 @@
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
     --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    --nav-height: 70px; /* fixed navbar approximate height for offsets */
 }
 
 body {
@@ -211,18 +212,37 @@ body {
     display: flex;
     align-items: center;
     position: relative;
-    background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 50%, #f0fdf4 100%);
+    /* Keep image crisp: set image as base, apply overlay via ::before to avoid blending artifacts */
+    background-image: url('images/icuriousAI_background_image.png');
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
     overflow: hidden;
 }
 
+/* Soft overlay for readability without washing out colors */
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: linear-gradient(135deg, rgba(240, 253, 244, 0.12) 0%, rgba(236, 253, 245, 0.10) 50%, rgba(240, 253, 244, 0.12) 100%);
+    pointer-events: none;
+    z-index: 0; /* sits above background image, below orbs/content */
+}
+
 .hero-container {
-    max-width: 1200px;
+    max-width: 1100px;
     margin: 0 auto;
     padding: 0 2rem;
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
     align-items: center;
+    justify-items: center;
+    text-align: center;
     position: relative;
     z-index: 2;
 }
@@ -256,7 +276,79 @@ body {
     font-weight: 800;
     line-height: 1.1;
     margin-bottom: 1.5rem;
-    color: var(--text-primary);
+    color: #f8fafc; /* soft off-white for better contrast on hero */
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Segmented title styles */
+.title-part {
+    opacity: 0;
+    display: inline-block;
+    transform: translateY(20px) translateZ(0);
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+.title-part-1 {
+    color: #d4fc21; /* match hero heading to off-white */
+}
+
+.title-part-2 {
+    color: #d4fc21;
+}
+
+/* Vertical slide-in keyframes for segmented title (no scale/letter-spacing to avoid wobble) */
+@keyframes slideDownFade {
+    0% {
+        opacity: 0;
+        transform: translateY(-26px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideUpFade {
+    0% {
+        opacity: 0;
+        transform: translateY(26px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-in-left {
+    animation: slideDownFade 1000ms cubic-bezier(.22,.72,.18,1) forwards;
+    transform-origin: center center;
+    backface-visibility: hidden;
+    -webkit-font-smoothing: antialiased;
+    will-change: transform, opacity;
+}
+
+.animate-in-right {
+    animation: slideUpFade 1000ms cubic-bezier(.22,.72,.18,1) forwards;
+    transform-origin: center center;
+    backface-visibility: hidden;
+    -webkit-font-smoothing: antialiased;
+    will-change: transform, opacity;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .title-part,
+    .animate-in-left,
+    .animate-in-right {
+        opacity: 1 !important;
+        transform: none !important;
+        filter: none !important;
+        animation: none !important;
+    }
 }
 
 .gradient-text { 
@@ -269,10 +361,63 @@ body {
 
 .hero-subtitle {
     font-size: 1.25rem;
-    color: var(--text-secondary);
+    color: rgba(255, 255, 255, 0.9);
     margin-bottom: 2rem;
     line-height: 1.6;
     max-width: 500px;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+/* Hero Benefits */
+.hero-benefits {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+    align-items: center;
+}
+
+.benefit-point {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0;
+    color: var(--text-primary);
+    font-weight: 500;
+    font-size: 1rem;
+    justify-content: center;
+}
+
+/* Inline benefits on larger screens with elegant separators */
+@media (min-width: 768px) {
+    .hero-benefits {
+        flex-direction: row;
+        justify-content: center;
+        gap: 2.5rem; /* spacing between phrases */
+        flex-wrap: nowrap;
+    }
+
+    .benefit-point {
+        position: relative;
+        padding: 0; /* tighten vertical rhythm when inline */
+    }
+
+    .benefit-point:not(:last-child)::after {
+        content: '';
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: rgba(34, 197, 94, 0.35); /* subtle primary dot */
+        margin-left: 2.5rem; /* distance from phrase to dot */
+    }
+}
+
+.benefit-point i {
+    color: var(--primary-color);
+    font-size: 1.1rem;
+    width: 20px;
+    text-align: center;
 }
 
 /* Hero Features */
@@ -281,6 +426,22 @@ body {
     gap: 1rem;
     margin-bottom: 2.5rem;
     flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* Combined hero benefits sentence */
+.hero-benefits-text {
+    color: #ffffff; /* white on laptop/desktop */
+    font-weight: 600;
+    font-size: 1rem;
+    text-align: center;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    box-shadow: none;
 }
 
 .feature-bubble {
@@ -312,6 +473,15 @@ body {
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
+    justify-content: center; /* center buttons under feature cards */
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Ensure hero CTA buttons are symmetrical and consistent width */
+.hero-buttons .btn {
+    min-width: 200px;
 }
 
 .btn {
@@ -350,12 +520,9 @@ body {
 }
 
 /* AI Toy Showcase */
+/* Hide toy visual for centered hero */
 .hero-visual {
-    position: relative;
-    height: 600px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: none;
 }
 
 .ai-toy-showcase {
@@ -645,53 +812,70 @@ body {
 .vision {
     padding: 6rem 0;
     background: var(--bg-secondary);
-}
-
-.vision-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-}
-
-.vision-card {
-    background: white;
-    padding: 2rem;
-    border-radius: 1rem;
-    box-shadow: var(--shadow-md);
-    text-align: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.vision-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-xl);
-}
-
-.vision-icon {
-    width: 80px;
-    height: 80px;
-    background: var(--primary-color);
-    border-radius: 50%;
+    min-height: calc(100vh - var(--nav-height));
     display: flex;
     align-items: center;
-    justify-content: center;
-    margin: 0 auto 1.5rem;
+    scroll-margin-top: var(--nav-height);
 }
 
-.vision-icon i {
-    font-size: 2rem;
-    color: white;
+/* New aesthetic vision presentation */
+.vision-tagline {
+    font-weight: 700;
+    color: var(--primary-color);
 }
 
-.vision-card h3 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
+.vision-statement {
+    position: relative;
+    max-width: 900px;
+    margin: 0 auto;
+    background: linear-gradient(135deg, rgba(34,197,94,0.08) 0%, rgba(16,185,129,0.08) 55%, rgba(245,158,11,0.10) 100%);
+    border: 1px solid rgba(15,23,42,0.08);
+    box-shadow: 0 20px 45px rgba(15,23,42,.08), 0 6px 20px rgba(34,197,94,.12);
+    border-radius: 16px;
+    padding: clamp(1.25rem, 2.5vw, 2rem) clamp(1.25rem, 3vw, 2.25rem);
+    text-align: center;
 }
 
-.vision-card p {
-    color: var(--text-secondary);
-    line-height: 1.6;
+@media (max-width: 768px) {
+    .vision {
+        padding: 4rem 0; /* reduce padding on small screens to keep full view */
+        min-height: calc(100vh - var(--nav-height));
+    }
+}
+
+.vision-statement .quote-mark {
+    position: absolute;
+    top: -18px;
+    left: 24px;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: var(--secondary-color);
+    color: #111827;
+    display: grid;
+    place-items: center;
+    font-size: 20px;
+    box-shadow: 0 10px 24px rgba(245,158,11,.35);
+}
+
+.vision-statement .quote-mark i {
+    color: #111827;
+}
+
+.vision-statement p {
+    font-size: clamp(1.25rem, 2.4vw, 1.85rem);
+    line-height: 1.5;
+    color: #0f172a; /* slate-900 for strong contrast on soft gradient */
+    font-weight: 700;
+}
+
+@media (max-width: 640px) {
+    .vision-statement .quote-mark {
+        left: 16px;
+        width: 36px;
+        height: 36px;
+        font-size: 18px;
+    }
 }
 
 /* Features Section */
@@ -700,85 +884,81 @@ body {
     background: white;
 }
 
-.features-timeline {
-    position: relative;
-    max-width: 800px;
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    max-width: 1200px;
     margin: 0 auto;
 }
 
-.features-timeline::before {
+.feature-card {
+    background: white;
+    padding: 2.5rem 2rem;
+    border-radius: 1.5rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    text-align: center;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.feature-card::before {
     content: '';
     position: absolute;
-    left: 50%;
     top: 0;
-    bottom: 0;
-    width: 2px;
-    background: var(--primary-color);
-    transform: translateX(-50%);
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
 }
 
-.timeline-item {
-    position: relative;
-    margin-bottom: 3rem;
+.feature-card:hover::before {
+    transform: scaleX(1);
 }
 
-.timeline-item:nth-child(odd) .timeline-content {
-    margin-left: 0;
-    margin-right: 50%;
-    padding-right: 2rem;
-    text-align: right;
+.feature-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
 }
 
-.timeline-item:nth-child(even) .timeline-content {
-    margin-left: 50%;
-    margin-right: 0;
-    padding-left: 2rem;
-    text-align: left;
-}
-
-.timeline-content {
-    background: white;
-    padding: 2rem;
-    border-radius: 1rem;
-    box-shadow: var(--shadow-md);
-    position: relative;
-}
-
-.timeline-icon {
-    position: absolute;
-    top: 50%;
-    width: 60px;
-    height: 60px;
-    background: var(--primary-color);
-    border-radius: 50%;
+.feature-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    border-radius: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
-    transform: translateY(-50%);
+    margin: 0 auto 1.5rem;
+    box-shadow: 0 8px 24px rgba(34, 197, 94, 0.25);
+    transition: all 0.3s ease;
 }
 
-.timeline-item:nth-child(odd) .timeline-icon {
-    right: -30px;
+.feature-card:hover .feature-icon {
+    transform: scale(1.1);
+    box-shadow: 0 12px 32px rgba(34, 197, 94, 0.35);
 }
 
-.timeline-item:nth-child(even) .timeline-icon {
-    left: -30px;
-}
-
-.timeline-icon i {
-    font-size: 1.5rem;
+.feature-icon i {
+    font-size: 2rem;
     color: white;
 }
 
-.timeline-content h3 {
-    font-size: 1.25rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
+.feature-card h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
 }
 
-.timeline-content p {
+.feature-card p {
     color: var(--text-secondary);
-    line-height: 1.6;
+    line-height: 1.7;
+    font-size: 1rem;
 }
 
 /* Age Groups Section */
@@ -1128,9 +1308,16 @@ body {
     .hero-container {
         grid-template-columns: 1fr;
         text-align: center;
-        gap: 4rem;
-        padding-top: 2rem;
-        padding-bottom: 3rem;
+        gap: 1rem;
+        padding-top: 0; /* minimal gap from top bar */
+        padding-bottom: 2rem;
+    }
+
+    /* Use phone-specific hero background on mobile for best fit */
+    .hero {
+        background-image: url('images/icuriousAI_phone_background_image.png');
+        background-size: cover;
+        background-position: center top;
     }
 
     .hero-badge {
@@ -1138,10 +1325,15 @@ body {
         margin-top: 1rem;
     }
 
+    /* Lift entire hero content to avoid overlap with illustration */
+    .hero-content {
+        transform: translateY(-28px);
+    }
+
     .hero-title {
-        font-size: 2.5rem;
-        margin-top: 1rem;
-        line-height: 1.2;
+        font-size: clamp(1.35rem, 5.8vw, 1.7rem);
+        margin-top: 0.25rem;
+        line-height: 1.15;
     }
 
     .hero-subtitle {
@@ -1149,9 +1341,24 @@ body {
         margin-bottom: 1.5rem;
     }
 
+    .hero-benefits {
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .benefit-point {
+        font-size: 0.9rem;
+        gap: 0.5rem;
+    }
+
+    .benefit-point i {
+        font-size: 1rem;
+        width: 18px;
+    }
+
     .hero-features {
         justify-content: center;
-        margin-bottom: 2rem;
+        margin-bottom: 1rem;
     }
 
     .feature-bubble {
@@ -1161,6 +1368,12 @@ body {
 
     .hero-visual {
         height: 400px;
+    }
+
+    /* Lift hero content slightly on small screens */
+    .hero-content {
+        transform: translateY(-25px);
+        will-change: transform;
     }
 
     .ai-toy {
@@ -1196,23 +1409,32 @@ body {
         font-size: 1.5rem;
     }
 
-    .features-timeline::before {
-        left: 20px;
+    .features-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        padding: 0 1rem;
     }
 
-    .timeline-item:nth-child(odd) .timeline-content,
-    .timeline-item:nth-child(even) .timeline-content {
-        margin-left: 60px;
-        margin-right: 0;
-        padding-left: 2rem;
-        padding-right: 0;
-        text-align: left;
+    .feature-card {
+        padding: 2rem 1.5rem;
     }
 
-    .timeline-item:nth-child(odd) .timeline-icon,
-    .timeline-item:nth-child(even) .timeline-icon {
-        left: -30px;
-        right: auto;
+    .feature-icon {
+        width: 70px;
+        height: 70px;
+        border-radius: 16px;
+    }
+
+    .feature-icon i {
+        font-size: 1.75rem;
+    }
+
+    .feature-card h3 {
+        font-size: 1.25rem;
+    }
+
+    .feature-card p {
+        font-size: 0.95rem;
     }
 
     .contact-content {
@@ -1227,6 +1449,9 @@ body {
     .hero-buttons {
         justify-content: center;
     }
+    .hero-buttons .btn {
+        min-width: 130px;
+    }
 
     .contact-buttons {
         justify-content: center;
@@ -1239,8 +1464,8 @@ body {
     }
 
     .hero-container {
-        padding-top: 3rem; /* Increase top padding for smaller screens */
-        padding-bottom: 2rem; /* Add bottom padding */
+        padding-top: 0.1rem; /* Move content area up */
+        padding-bottom: 2rem; /* Keep bottom padding */
     }
 
     .hero-badge {
@@ -1249,9 +1474,9 @@ body {
     }
 
     .hero-title {
-        font-size: 2rem;
-        margin-top: 1.5rem;
-        line-height: 1.3;
+        font-size: clamp(1.2rem, 6.8vw, 1.5rem);
+        margin-top: 0.75rem;
+        line-height: 1.25;
     }
 
     .hero-subtitle {
@@ -1259,11 +1484,34 @@ body {
         margin-bottom: 1.5rem;
     }
 
+    /* Hero Benefits - mobile */
+    .hero-benefits {
+        gap: 0.6rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .benefit-point {
+        font-size: 0.95rem;
+        gap: 0.6rem;
+    }
+
+    .benefit-point i {
+        font-size: 1rem;
+        width: 18px;
+    }
+
     .hero-features {
         flex-direction: column;
         align-items: center;
-        gap: 0.8rem;
-        margin-bottom: 3rem;
+        gap: 0.7rem;
+        margin-bottom: 1.75rem;
+    }
+
+    .hero-benefits-text {
+        font-size: 0.95rem;
+        padding: 0;
+        background: transparent;
+        color: #eafff5;
     }
 
     .feature-bubble {
@@ -1273,9 +1521,14 @@ body {
 
     .hero-visual {
         height: 300px;
-        margin-top: 3rem;
+        margin-top: 2rem; /* free vertical space for content */
         margin-bottom: 2rem;
     }
+
+    /* Stronger lift to avoid overlap with illustration */
+    .hero-content { transform: translateY(-120px) !important; }
+    .hero-benefits { margin-top: -15px !important; }
+    .hero-buttons { margin-top: 15px !important; }
 
     .ai-toy {
         width: 120px;
@@ -1309,7 +1562,7 @@ body {
     }
 
     .btn {
-        padding: 0.75rem 1.5rem;
+        padding: 0.7rem 1.4rem;
         font-size: 0.875rem;
     }
 
@@ -1331,14 +1584,29 @@ body {
     }
 
     .hero-title {
-        font-size: 1rem; /* Even smaller for very small screens */
-        margin-top: 2rem;
-        line-height: 1.5;
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
+        line-height: 1.1;
     }
 
     .hero-subtitle {
         font-size: 0.75rem; /* Even smaller subtitle */
         margin-bottom: 1rem;
+    }
+
+    /* Hero Benefits - very small */
+    .hero-benefits {
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .benefit-point {
+        font-size: 0.85rem;
+    }
+
+    .benefit-point i {
+        font-size: 0.95rem;
+        width: 16px;
     }
 
     .hero-buttons {
@@ -1368,9 +1636,9 @@ body {
     }
 
     .hero-title {
-        font-size: 0.9rem; /* Ultra small for very tiny screens */
-        margin-top: 2.5rem;
-        line-height: 1.6;
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
+        line-height: 1.15;
     }
 
     .hero-subtitle {
@@ -1840,7 +2108,7 @@ html {
     }
 
     .hero-title {
-        font-size: 2.5rem;
+        font-size: clamp(1.4rem, 6vw, 1.8rem);
     }
 
     .hero-visual {
@@ -1879,7 +2147,7 @@ html {
 
 @media (max-width: 480px) {
     .hero-title {
-        font-size: 2rem;
+        font-size: clamp(1.2rem, 6.8vw, 1.5rem);
     }
     
     .hero-product-card {
@@ -2407,3 +2675,20 @@ html {
         max-width: 200px;
     }
 } 
+
+/* Mobile hero title overrides placed after tablet rules to win the cascade */
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: clamp(1.4rem, 8.8vw, 2.5rem) !important;
+        line-height: 2.25 !important;
+        margin-top: 0.75rem !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: clamp(1.4rem, 6vw, 1.8rem) !important;
+        line-height: 1.2 !important;
+        margin-top: 0.75rem !important;
+    }
+}
