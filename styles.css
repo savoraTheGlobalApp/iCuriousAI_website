@@ -212,12 +212,13 @@ body {
     display: flex;
     align-items: center;
     position: relative;
-    /* Keep image crisp: set image as base, apply overlay via ::before to avoid blending artifacts */
-    background-image: url('images/icuriousAI_background_image.png');
+    /* Progressive loading: WebP for fast initial load */
+    background-image: url('images/icuriousAI_background_image.webp');
     background-size: cover;
     background-position: center top;
     background-repeat: no-repeat;
     overflow: hidden;
+    transition: background-image 0.3s ease;
 }
 
 /* Soft overlay for readability without washing out colors */
