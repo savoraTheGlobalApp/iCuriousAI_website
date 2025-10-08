@@ -239,13 +239,35 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Add loading animation
+    // Progressive background image loading
+    function loadHighResBackground() {
+        const hero = document.querySelector('.hero');
+        if (hero) {
+            // Determine which background to load based on screen size
+            const isMobile = window.innerWidth <= 768;
+            const imagePath = isMobile 
+                ? 'images/icuriousAI_phone_background_image.png'
+                : 'images/icuriousAI_background_image.png';
+            
+            // Preload the high-resolution PNG image
+            const img = new Image();
+            img.onload = function() {
+                // Seamlessly switch to high-res image once loaded
+                hero.style.backgroundImage = `url(${imagePath})`;
+            };
+            img.src = imagePath;
+        }
+    }
+
+    // Load high-res background after initial page load
     window.addEventListener('load', function() {
         document.body.style.opacity = '0';
         document.body.style.transition = 'opacity 0.5s ease';
         
         setTimeout(() => {
             document.body.style.opacity = '1';
+            // Start loading high-res background after page is visible
+            setTimeout(loadHighResBackground, 500);
         }, 100);
     });
 });
