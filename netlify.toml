@@ -1,3 +1,8 @@
+[build]
+  base = "client"
+  publish = "dist"
+  command = "npm install && npm run build"
+
 [functions]
   directory = "netlify/functions"
   node_bundler = "esbuild"
@@ -11,3 +16,8 @@
     Access-Control-Allow-Origin = "*"
     Access-Control-Allow-Headers = "Content-Type"
     Access-Control-Allow-Methods = "POST, OPTIONS"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
