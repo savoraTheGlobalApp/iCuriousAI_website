@@ -357,7 +357,8 @@ export const Contact = () => {
   const [submitting, setSubmitting] = useState(false);
   const recaptchaRef = useRef(null);
 
-  const SITE_KEY = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
+  const SITE_KEY = "6LcEV6YrAAAAAEL5ODYA_oSSprvXuKYqutm8fpHZ";
+;
   
   const handleSubmit = async (e) => {
     e.preventDefault();
