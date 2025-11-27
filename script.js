@@ -1,11 +1,11 @@
 // Navigation functionality
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const hamburger = document.querySelector('.hamburger');
     const navMenu = document.querySelector('.nav-menu');
     const navbar = document.querySelector('.navbar');
 
     // Mobile menu toggle
-    hamburger.addEventListener('click', function() {
+    hamburger.addEventListener('click', function () {
         hamburger.classList.toggle('active');
         navMenu.classList.toggle('active');
     });
@@ -19,15 +19,17 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Navbar background on scroll
-    window.addEventListener('scroll', function() {
+    // Navbar background on scroll
+    function updateNavbar() {
         if (window.scrollY > 100) {
-            navbar.style.background = 'rgba(255, 255, 255, 0.98)';
-            navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
+            navbar.classList.add('scrolled');
         } else {
-            navbar.style.background = 'rgba(255, 255, 255, 0.95)';
-            navbar.style.boxShadow = 'none';
+            navbar.classList.remove('scrolled');
         }
-    });
+    }
+
+    window.addEventListener('scroll', updateNavbar);
+    updateNavbar(); // Check on load
 
     // Smooth scrolling for navigation links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -44,10 +46,10 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Parallax effect for floating elements
-    window.addEventListener('scroll', function() {
+    window.addEventListener('scroll', function () {
         const scrolled = window.pageYOffset;
         const parallaxElements = document.querySelectorAll('.floating-card');
-        
+
         parallaxElements.forEach(element => {
             const speed = element.getAttribute('data-speed') || 1;
             const yPos = -(scrolled * speed * 0.5);
@@ -61,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function() {
         rootMargin: '0px 0px -50px 0px'
     };
 
-    const observer = new IntersectionObserver(function(entries) {
+    const observer = new IntersectionObserver(function (entries) {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.style.opacity = '1';
@@ -80,84 +82,84 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.addEventListener("DOMContentLoaded", () => {
         const contactForm = document.getElementById("contactForm");
-      
+
         contactForm.addEventListener("submit", async (e) => {
-          e.preventDefault();
-      
-          const recaptchaToken = grecaptcha.getResponse();
-          if (!recaptchaToken) {
-            alert("Please complete the reCAPTCHA.");
-            return;
-          }
-      
-          const formData = new FormData(contactForm);
-          const payload = {
-            name: formData.get("name"),
-            email: formData.get("email"),
-            role: formData.get("role"),
-            message: formData.get("message"),
-            recaptchaToken
-          };
-      
-          try {
-            const res = await fetch("/.netlify/functions/submit-contact", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(payload)
-            });
-      
-            const data = await res.json();
-      
-            if (data.success) {
-              window.location.href = "/thank-you.html";
-            } else {
-              alert("Error: " + (data.error || "Something went wrong"));
+            e.preventDefault();
+
+            const recaptchaToken = grecaptcha.getResponse();
+            if (!recaptchaToken) {
+                alert("Please complete the reCAPTCHA.");
+                return;
             }
-          } catch (err) {
-            console.error(err);
-            alert("Something went wrong. Please try again.");
-          }
+
+            const formData = new FormData(contactForm);
+            const payload = {
+                name: formData.get("name"),
+                email: formData.get("email"),
+                role: formData.get("role"),
+                message: formData.get("message"),
+                recaptchaToken
+            };
+
+            try {
+                const res = await fetch("/.netlify/functions/submit-contact", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await res.json();
+
+                if (data.success) {
+                    window.location.href = "/thank-you.html";
+                } else {
+                    alert("Error: " + (data.error || "Something went wrong"));
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Something went wrong. Please try again.");
+            }
         });
-      });
+    });
 
 
     document.addEventListener("DOMContentLoaded", () => {
-    const waitlistForm = document.getElementById("waitlistForm");
-    if (waitlistForm) {
-        waitlistForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
-    
-        const formData = new FormData(waitlistForm);
-        const payload = {
-            name: formData.get("name"),
-            email: formData.get("email"),
-            mobile: formData.get("mobile")
-        };
-    
-        try {
-            const res = await fetch("/.netlify/functions/waitlist-signup", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
+        const waitlistForm = document.getElementById("waitlistForm");
+        if (waitlistForm) {
+            waitlistForm.addEventListener("submit", async (e) => {
+                e.preventDefault();
+
+                const formData = new FormData(waitlistForm);
+                const payload = {
+                    name: formData.get("name"),
+                    email: formData.get("email"),
+                    mobile: formData.get("mobile")
+                };
+
+                try {
+                    const res = await fetch("/.netlify/functions/waitlist-signup", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(payload)
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                        window.location.href = "/thank-you.html";
+                    } else {
+                        alert("Error: " + (data.error || "Something went wrong"));
+                    }
+                } catch (err) {
+                    console.error(err);
+                    alert("Something went wrong. Please try again.");
+                }
             });
-            const data = await res.json();
-            if (data.success) {
-                window.location.href = "/thank-you.html";
-            } else {
-                alert("Error: " + (data.error || "Something went wrong"));
-            }
-        } catch (err) {
-            console.error(err);
-            alert("Something went wrong. Please try again.");
         }
-        });
-    }
     });
-      
+
 
     // Button click handlers
     document.querySelectorAll('.btn-primary').forEach(btn => {
-        btn.addEventListener('click', function(e) {
+        btn.addEventListener('click', function (e) {
             if (this.textContent.includes('Get Started') || this.textContent.includes('Request Demo')) {
                 e.preventDefault();
                 document.querySelector('#contact').scrollIntoView({
@@ -184,7 +186,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function animateCounter(element, target, duration = 2000) {
         let start = 0;
         const increment = target / (duration / 16);
-        
+
         function updateCounter() {
             start += increment;
             if (start < target) {
@@ -198,17 +200,17 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Observe stats for counter animation
-    const statsObserver = new IntersectionObserver(function(entries) {
+    const statsObserver = new IntersectionObserver(function (entries) {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 const statNumber = entry.target.querySelector('.stat-number');
                 const text = statNumber.textContent;
-                
+
                 if (text !== '∞') {
                     const number = parseInt(text);
                     animateCounter(statNumber, number);
                 }
-                
+
                 statsObserver.unobserve(entry.target);
             }
         });
@@ -230,11 +232,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Add hover effects for interactive elements
     document.querySelectorAll('.vision-card, .age-card, .timeline-content').forEach(card => {
-        card.addEventListener('mouseenter', function() {
+        card.addEventListener('mouseenter', function () {
             this.style.transform = 'translateY(-10px) scale(1.02)';
         });
-        
-        card.addEventListener('mouseleave', function() {
+
+        card.addEventListener('mouseleave', function () {
             this.style.transform = 'translateY(0) scale(1)';
         });
     });
@@ -245,13 +247,13 @@ document.addEventListener('DOMContentLoaded', function() {
         if (hero) {
             // Determine which background to load based on screen size
             const isMobile = window.innerWidth <= 768;
-            const imagePath = isMobile 
+            const imagePath = isMobile
                 ? 'images/icuriousAI_phone_background_image.png'
                 : 'images/icuriousAI_background_image.png';
-            
+
             // Preload the high-resolution PNG image
             const img = new Image();
-            img.onload = function() {
+            img.onload = function () {
                 // Seamlessly switch to high-res image once loaded
                 hero.style.backgroundImage = `url(${imagePath})`;
             };
@@ -260,10 +262,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Load high-res background after initial page load
-    window.addEventListener('load', function() {
+    window.addEventListener('load', function () {
         document.body.style.opacity = '0';
         document.body.style.transition = 'opacity 0.5s ease';
-        
+
         setTimeout(() => {
             document.body.style.opacity = '1';
             // Start loading high-res background after page is visible
