@@ -115,7 +115,6 @@ app.post('/api/submit-contact', async (req, res) => {
         console.error("Server error:", error);
         return res.status(500).json({ error: "Internal Server Error" });
     }
-}
 });
 
 // Serve static files from the React app
