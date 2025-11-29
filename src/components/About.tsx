@@ -4,7 +4,7 @@ import { ImageWithFallback } from './figma/ImageWithFallback';
 export function About() {
   const founders = [
     {
-      name: 'Dr. Founder Name',
+      name: 'Dr. Rajan Kumar',
       role: 'CEO & Co-Founder',
       education: 'MBBS, AIIMS Delhi',
       image: 'src/assets/Rajan_photograph.jpg'

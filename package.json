@@ -57,6 +57,8 @@
       },
       "scripts": {
             "dev": "vite",
-            "build": "vite build"
+            "build": "vite build",
+            "postinstall": "cd backend && npm install",
+            "start": "node backend/server.js"
       }
 }
