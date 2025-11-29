@@ -1,25 +1,28 @@
 import { GraduationCap, Heart, School, Users } from 'lucide-react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
+import RajanPhoto from '../assets/Rajan_photograph.jpg';
+import ShoryaPhoto from '../assets/Shorya_photo.jpg';
+import PiyushPhoto from '../assets/Piyush_photo.jpg';
 
 export function About() {
   const founders = [
     {
       name: 'Dr. Rajan Kumar',
-      role: 'CEO & Co-Founder',
+      role: 'Co-Founder & CEO',
       education: 'MBBS, AIIMS Delhi',
-      image: 'src/assets/Rajan_photograph.jpg'
+      image: RajanPhoto
     },
     {
       name: 'Shorya Kumar',
-      role: 'CPO & Co-Founder',
+      role: 'Co-Founder & CPO',
       education: 'B.Tech, IIT Kanpur',
-      image: 'src/assets/Shorya_photo.jpg'
+      image: ShoryaPhoto
     },
     {
       name: 'Piyush Kumar',
-      role: 'CTO & Co-Founder',
+      role: 'Co-Founder & CTO',
       education: 'B.Tech, IIT Kanpur',
-      image: 'src/assets/Piyush_photo.jpg'
+      image: PiyushPhoto
     }
   ];
 
