@@ -106,13 +106,14 @@ export function Waitlist() {
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <label htmlFor="name" className="block text-lg mb-3 text-black">
-                  Your Name <span className="text-gray-400 text-sm">(optional)</span>
+                  Your Name
                 </label>
                 <div className="relative">
                   <User className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={22} />
                   <input
                     type="text"
                     id="name"
+                    required
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     className="w-full pl-14 pr-4 py-4 text-lg border-2 border-gray-200 rounded-xl focus:border-[#FFD93D] focus:outline-none transition-colors"
@@ -141,13 +142,14 @@ export function Waitlist() {
 
               <div>
                 <label htmlFor="mobile" className="block text-lg mb-3 text-black">
-                  Mobile Number <span className="text-gray-400 text-sm">(optional)</span>
+                  Mobile Number
                 </label>
                 <div className="relative">
                   <Phone className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={22} />
                   <input
                     type="tel"
                     id="mobile"
+                    required
                     value={formData.mobile}
                     onChange={(e) => setFormData({ ...formData, mobile: e.target.value })}
                     className="w-full pl-14 pr-4 py-4 text-lg border-2 border-gray-200 rounded-xl focus:border-[#FFD93D] focus:outline-none transition-colors"
