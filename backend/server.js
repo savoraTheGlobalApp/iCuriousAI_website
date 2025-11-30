@@ -23,7 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 // Waitlist Signup Endpoint
 app.post('/api/waitlist-signup', async (req, res) => {
     try {
-        const { name, email, message } = req.body;
+        const { name, email, mobile } = req.body;
 
         if (!email) {
             return res.status(400).json({ error: "Email is required" });
@@ -38,7 +38,7 @@ app.post('/api/waitlist-signup', async (req, res) => {
                 "Authorization": `Bearer ${process.env.SUPABASE_ANON_KEY}`,
                 "Prefer": "return=representation"
             },
-            body: JSON.stringify({ name, email, message })
+            body: JSON.stringify({ name, email, mobile })
         });
 
         if (!supabaseRes.ok) {
