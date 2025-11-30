@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Mail, User, MessageSquare, CheckCircle } from 'lucide-react';
+import { Mail, User, Phone, CheckCircle } from 'lucide-react';
 
 export function Waitlist() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    message: ''
+    mobile: ''
   });
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
@@ -24,14 +24,33 @@ export function Waitlist() {
         body: JSON.stringify(formData),
       });
 
-      const data = await response.json();
-
       if (!response.ok) {
-        throw new Error(data.error || 'Something went wrong');
+        // Try to parse error response, but handle empty responses
+        let errorData;
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+          try {
+            errorData = await response.json();
+          } catch {
+            errorData = { error: `Server error: ${response.status} ${response.statusText}` };
+          }
+        } else {
+          errorData = { error: `Server error: ${response.status} ${response.statusText}` };
+        }
+        throw new Error(errorData.error || 'Something went wrong');
       }
 
-      setStatus('success');
-      setFormData({ name: '', email: '', message: '' });
+      // Parse successful response
+      const contentType = response.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        const data = await response.json();
+        setStatus('success');
+        setFormData({ name: '', email: '', mobile: '' });
+      } else {
+        // Handle non-JSON successful responses
+        setStatus('success');
+        setFormData({ name: '', email: '', mobile: '' });
+      }
 
       // Reset success state after 3 seconds if you want to show the form again, 
       // but the UI shows a success message instead of the form, so we might want to keep it.
@@ -42,7 +61,11 @@ export function Waitlist() {
     } catch (error: any) {
       console.error('Error submitting form:', error);
       setStatus('error');
-      setErrorMessage(error.message || 'Failed to join waitlist. Please try again.');
+      if (error.message && error.message.includes('fetch')) {
+        setErrorMessage('Unable to connect to server. Please make sure the backend server is running.');
+      } else {
+        setErrorMessage(error.message || 'Failed to join waitlist. Please try again.');
+      }
     } finally {
       if (status !== 'success') {
         // only set idle if not success, to keep the success message
@@ -83,14 +106,13 @@ export function Waitlist() {
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <label htmlFor="name" className="block text-lg mb-3 text-black">
-                  Your Name
+                  Your Name <span className="text-gray-400 text-sm">(optional)</span>
                 </label>
                 <div className="relative">
                   <User className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={22} />
                   <input
                     type="text"
                     id="name"
-                    required
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     className="w-full pl-14 pr-4 py-4 text-lg border-2 border-gray-200 rounded-xl focus:border-[#FFD93D] focus:outline-none transition-colors"
@@ -118,18 +140,18 @@ export function Waitlist() {
               </div>
 
               <div>
-                <label htmlFor="message" className="block text-lg mb-3 text-black">
-                  Tell us about your child (optional)
+                <label htmlFor="mobile" className="block text-lg mb-3 text-black">
+                  Mobile Number <span className="text-gray-400 text-sm">(optional)</span>
                 </label>
                 <div className="relative">
-                  <MessageSquare className="absolute left-4 top-5 text-gray-400" size={22} />
-                  <textarea
-                    id="message"
-                    rows={4}
-                    value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    className="w-full pl-14 pr-4 py-4 text-lg border-2 border-gray-200 rounded-xl focus:border-[#FFD93D] focus:outline-none transition-colors resize-none"
-                    placeholder="Age, interests, what excites them..."
+                  <Phone className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={22} />
+                  <input
+                    type="tel"
+                    id="mobile"
+                    value={formData.mobile}
+                    onChange={(e) => setFormData({ ...formData, mobile: e.target.value })}
+                    className="w-full pl-14 pr-4 py-4 text-lg border-2 border-gray-200 rounded-xl focus:border-[#FFD93D] focus:outline-none transition-colors"
+                    placeholder="Enter your mobile number"
                   />
                 </div>
               </div>
