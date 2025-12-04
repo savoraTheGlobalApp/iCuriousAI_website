@@ -61,6 +61,13 @@ jspm_packages/
 # vuepress build output
 .vuepress/dist
 
+# Build outputs
+build/
+dist/
+
+# Railway
+.railway/
+
 # Serverless directories
 .serverless/
 
@@ -92,3 +99,6 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.temp
+
+# Accidentally created files from command output
+-*
