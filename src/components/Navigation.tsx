@@ -111,22 +111,24 @@ export function Navigation() {
             exit={{ opacity: 0, height: 0 }}
             className="md:hidden bg-white border-t border-gray-100 shadow-xl overflow-y-auto"
           >
-            <div className="px-4 py-8 pb-32 space-y-6 flex flex-col">
-              {['Home', 'Product', 'Team', 'Vision', 'Blog'].map((item) => (
+            <div className="px-4 py-8 pb-32 space-y-2 flex flex-col items-center">
+              {['Home', 'Product', 'Team', 'Vision', 'Blog'].map((item, index) => (
                 <button
                   key={item}
                   onClick={() => handleNavigation(item)}
-                  className="block w-full text-left text-lg font-medium text-gray-800 hover:text-[#FFD93D] py-2"
+                  className="block w-full max-w-sm text-center text-lg font-medium text-gray-800 hover:text-[#FFD93D] hover:bg-[#FFD93D]/10 py-4 px-6 rounded-xl transition-all duration-200 border-b border-gray-100 last:border-b-0"
                 >
                   {item}
                 </button>
               ))}
-              <button
-                onClick={() => scrollToSection('waitlist')}
-                className="block w-full px-6 py-4 bg-black text-white rounded-full text-center font-medium hover:bg-gray-800"
-              >
-                Join Waitlist
-              </button>
+              <div className="w-full max-w-sm pt-4">
+                <button
+                  onClick={() => scrollToSection('waitlist')}
+                  className="block w-full px-6 py-4 bg-black text-white rounded-full text-center font-medium hover:bg-gray-800 hover:shadow-lg transition-all transform hover:scale-105"
+                >
+                  Join Waitlist
+                </button>
+              </div>
             </div>
           </motion.div>
         )}

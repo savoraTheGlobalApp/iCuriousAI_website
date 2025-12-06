@@ -7,8 +7,8 @@ export function Footer() {
     <footer className="bg-black text-white py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-4 gap-10 mb-12">
-          <div className="md:col-span-2">
-            <div className="mb-6 flex items-center gap-3">
+          <div className="md:col-span-2 text-center md:text-left">
+            <div className="mb-6 flex items-center gap-3 justify-center md:justify-start">
               <img src={kittyIcon} alt="Kitty" className="h-12 w-12" />
               <span className="text-2xl text-white">iCurious AI</span>
             </div>
@@ -21,8 +21,8 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="text-xl mb-5 text-[#FFD93D]">Quick Links</h4>
-            <ul className="space-y-3 text-lg text-gray-300">
+            <h4 className="text-xl mb-5 text-[#FFD93D] text-center md:text-left">Quick Links</h4>
+            <ul className="space-y-3 text-lg text-gray-300 text-center md:text-left">
               <li>
                 <a href="#home" className="hover:text-[#FFD93D] transition-colors">
                   Home
@@ -48,20 +48,20 @@ export function Footer() {
                   Blog
                 </a>
               </li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-xl mb-5 text-[#FFD93D]">Connect</h4>
-            <ul className="space-y-3 text-lg text-gray-300">
               <li>
                 <a href="#waitlist" className="hover:text-[#FFD93D] transition-colors">
                   Join Waitlist
                 </a>
               </li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="text-xl mb-5 text-[#FFD93D] text-center md:text-left">Connect</h4>
+            <ul className="space-y-3 text-lg text-gray-300 text-center md:text-left">
               <li>
                 <a href="mailto:hello@icurious.ai" className="hover:text-[#FFD93D] transition-colors">
-                  Contact Us
+                  hello@icurious.ai
                 </a>
               </li>
             </ul>

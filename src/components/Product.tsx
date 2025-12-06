@@ -52,9 +52,9 @@ export function Product() {
             {features.map((feature, index) => (
               <div
                 key={index}
-                className="p-8 rounded-2xl bg-gradient-to-br from-[#FFD93D]/10 to-[#FFD93D]/5 border-2 border-transparent hover:border-[#FFD93D] transition-all hover:shadow-xl"
+                className="p-8 rounded-2xl bg-gradient-to-br from-[#FFD93D]/10 to-[#FFD93D]/5 border-2 border-transparent hover:border-[#FFD93D] transition-all hover:shadow-xl text-center"
               >
-                <div className="w-14 h-14 bg-[#FFD93D] rounded-xl flex items-center justify-center mb-5">
+                <div className="w-14 h-14 bg-[#FFD93D] rounded-xl flex items-center justify-center mb-5 mx-auto">
                   <feature.icon size={28} className="text-black" />
                 </div>
                 <h4 className="text-2xl mb-3 text-black">{feature.title}</h4>

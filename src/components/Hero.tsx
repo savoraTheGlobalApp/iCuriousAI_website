@@ -75,13 +75,6 @@ export function Hero() {
                 Join the Waitlist
                 <ArrowRight size={20} />
               </button>
-              <button
-                onClick={() => setShowVideo(true)}
-                className="px-8 py-4 bg-white/90 text-black border-2 border-black rounded-full hover:bg-white hover:shadow-xl transition-all flex items-center justify-center gap-2 font-bold text-lg"
-              >
-                <Play size={20} />
-                Watch Video
-              </button>
             </motion.div>
           </motion.div>
 
