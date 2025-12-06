@@ -120,7 +120,7 @@ export function Hero() {
             {/* Status Notice */}
             <div className="mt-16 p-5 bg-white border-2 border-[#FFD93D] rounded-3xl text-center relative z-10 shadow-lg">
               <p className="text-base text-black leading-relaxed">
-                <span className="font-bold">🚀 Coming Soon!</span> Our smart teddy shown in video is an early prototype.
+                <span className="font-bold"></span> Our smart teddy shown in video is an early prototype.
               </p>
             </div>
           </motion.div>

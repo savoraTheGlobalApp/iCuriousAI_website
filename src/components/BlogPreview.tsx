@@ -7,6 +7,14 @@ export function BlogPreview() {
     return (
         <section id="blog" className="py-24 bg-gradient-to-br from-[#FFD93D]/5 to-white">
             <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="text-center mb-16">
+                    <h2 className="text-5xl md:text-6xl mb-6 text-black">
+                        Our Vision
+                    </h2>
+                    <p className="text-2xl text-gray-700 max-w-3xl mx-auto leading-relaxed mb-12">
+                        Reimagining how we interact with technology
+                    </p>
+                </div>
                 <div className="text-center mb-12">
                     <div className="flex items-center justify-center gap-3 mb-6">
                         <BookOpen size={40} className="text-black" />

@@ -40,6 +40,10 @@ export function Navigation() {
     if (item === 'Blog') {
       navigate('/blog');
       setIsMobileMenuOpen(false);
+    } else if (item === 'Vision') {
+      scrollToSection('blog');
+    } else if (item === 'Product') {
+      scrollToSection('vision');
     } else if (item === 'Home') {
       if (location.pathname !== '/') {
         navigate('/');
@@ -70,7 +74,7 @@ export function Navigation() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
-            {['Home', 'Vision', 'Product', 'About', 'Blog'].map((item) => (
+            {['Home', 'Product', 'Team', 'Vision', 'Blog'].map((item) => (
               <button
                 key={item}
                 onClick={() => handleNavigation(item)}
@@ -108,7 +112,7 @@ export function Navigation() {
             className="md:hidden bg-white border-t border-gray-100 shadow-xl overflow-y-auto"
           >
             <div className="px-4 py-8 pb-32 space-y-6 flex flex-col">
-              {['Home', 'Vision', 'Product', 'About', 'Blog'].map((item) => (
+              {['Home', 'Product', 'Team', 'Vision', 'Blog'].map((item) => (
                 <button
                   key={item}
                   onClick={() => handleNavigation(item)}

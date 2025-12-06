@@ -27,7 +27,7 @@ export function About() {
   ];
 
   return (
-    <section id="about" className="py-24 bg-white">
+    <section id="team" className="py-24 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-5xl md:text-6xl mb-6 text-black">
@@ -61,40 +61,6 @@ export function About() {
             ))}
           </div>
         </div>
-
-        {/* Values */}
-        <div className="grid md:grid-cols-3 gap-8 mb-20">
-          <div className="text-center p-8 rounded-2xl bg-[#FFD93D]/10 hover:bg-[#FFD93D]/20 transition-colors">
-            <div className="w-16 h-16 bg-[#FFD93D] rounded-full flex items-center justify-center mx-auto mb-4">
-              <GraduationCap size={32} className="text-black" />
-            </div>
-            <h3 className="text-2xl mb-3 text-black">World-Class Expertise</h3>
-            <p className="text-lg text-gray-700 leading-relaxed">
-              Combining medical insights with engineering excellence to create technology that truly serves children's development.
-            </p>
-          </div>
-
-          <div className="text-center p-8 rounded-2xl bg-[#FFD93D]/10 hover:bg-[#FFD93D]/20 transition-colors">
-            <div className="w-16 h-16 bg-[#FFD93D] rounded-full flex items-center justify-center mx-auto mb-4">
-              <Heart size={32} className="text-black" />
-            </div>
-            <h3 className="text-2xl mb-3 text-black">Child-First Approach</h3>
-            <p className="text-lg text-gray-700 leading-relaxed">
-              Every feature is designed with children's cognitive and emotional growth at the center of our decisions.
-            </p>
-          </div>
-
-          <div className="text-center p-8 rounded-2xl bg-[#FFD93D]/10 hover:bg-[#FFD93D]/20 transition-colors">
-            <div className="w-16 h-16 bg-[#FFD93D] rounded-full flex items-center justify-center mx-auto mb-4">
-              <Users size={32} className="text-black" />
-            </div>
-            <h3 className="text-2xl mb-3 text-black">Parent Partnership</h3>
-            <p className="text-lg text-gray-700 leading-relaxed">
-              We enhance quality family time, working alongside parents rather than replacing their irreplaceable role.
-            </p>
-          </div>
-        </div>
-
 
       </div>
     </section>

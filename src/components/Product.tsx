@@ -8,29 +8,14 @@ export function Product() {
       description: 'Engages naturally, encouraging questions and exploration'
     },
     {
-      icon: BookOpen,
-      title: 'Fun Learning',
-      description: 'Makes learning enjoyable through interactive conversations'
+      icon: GamepadIcon,
+      title: 'Playful Learning',
+      description: 'Interactive games, storytelling, and fun activities'
     },
     {
       icon: Brain,
-      title: 'Homework Helper',
-      description: 'Guides through problems rather than giving answers'
-    },
-    {
-      icon: GamepadIcon,
-      title: 'Educational Games',
-      description: 'Play-based learning that develops critical thinking'
-    },
-    {
-      icon: Lightbulb,
-      title: 'Critical Thinking',
-      description: 'Builds problem solving, creativity, and emotional intelligence'
-    },
-    {
-      icon: Users,
-      title: 'Storytelling & Creativity',
-      description: 'Collaborative storytelling that sparks imagination'
+      title: 'Guided Problem Solving',
+      description: 'Help by guiding through problems rather than giving direct answers'
     }
   ];
 
@@ -56,14 +41,55 @@ export function Product() {
   return (
     <section id="product" className="py-24 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
+        
+
+        {/* How Kitty Helps */}
+        <div className="mb-20">
+          <h3 className="text-4xl mb-10 text-center text-black">
+            How Kitty Helps Children
+          </h3>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {features.map((feature, index) => (
+              <div
+                key={index}
+                className="p-8 rounded-2xl bg-gradient-to-br from-[#FFD93D]/10 to-[#FFD93D]/5 border-2 border-transparent hover:border-[#FFD93D] transition-all hover:shadow-xl"
+              >
+                <div className="w-14 h-14 bg-[#FFD93D] rounded-xl flex items-center justify-center mb-5">
+                  <feature.icon size={28} className="text-black" />
+                </div>
+                <h4 className="text-2xl mb-3 text-black">{feature.title}</h4>
+                <p className="text-lg text-gray-700 leading-relaxed">{feature.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Parent Features */}
+        <div className="bg-black rounded-3xl p-10 md:p-14 text-white mb-20">
+          <h3 className="text-4xl mb-10 text-center text-[#FFD93D]">
+            How Kitty Helps Parents
+          </h3>
+          <div className="grid md:grid-cols-2 gap-8">
+            {parentFeatures.map((feature, index) => (
+              <div key={index} className="flex gap-4">
+                <div className="flex-shrink-0 w-2 h-2 bg-[#FFD93D] rounded-full mt-2.5"></div>
+                <div>
+                  <h4 className="text-2xl mb-2 text-white">{feature.title}</h4>
+                  <p className="text-lg text-white/80 leading-relaxed">{feature.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* <div className="text-center mb-16">
           <h2 className="text-5xl md:text-6xl mb-6 text-black">
             Meet Kitty
           </h2>
           <p className="text-2xl text-gray-700 max-w-3xl mx-auto leading-relaxed">
             A screen-free AI companion that grows, learns, and thinks with your child
           </p>
-        </div>
+        </div> */}
 
         {/* Key Principles */}
         <div className="grid md:grid-cols-3 gap-8 mb-20">
@@ -91,55 +117,12 @@ export function Product() {
             <div className="w-16 h-16 bg-black rounded-full flex items-center justify-center mx-auto mb-6">
               <School size={32} className="text-[#FFD93D]" />
             </div>
-            <h4 className="text-2xl mb-4 text-black">Partnering with Educators</h4>
+            <h4 className="text-2xl mb-4 text-black">Expert-Backed</h4>
             <p className="text-lg text-black/80 leading-relaxed">
-              We collaborate with daycare and Montessori to ensure Kitty complements early education.
+              We collaborate with Child Psychologists and Pedagogical experts to ensure effective child development.
             </p>
           </div>
         </div>
-
-        {/* How Kitty Helps */}
-        <div className="mb-20">
-          <h3 className="text-4xl mb-10 text-center text-black">
-            How Kitty Helps Children
-          </h3>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {features.map((feature, index) => (
-              <div
-                key={index}
-                className="p-8 rounded-2xl bg-gradient-to-br from-[#FFD93D]/10 to-[#FFD93D]/5 border-2 border-transparent hover:border-[#FFD93D] transition-all hover:shadow-xl"
-              >
-                <div className="w-14 h-14 bg-[#FFD93D] rounded-xl flex items-center justify-center mb-5">
-                  <feature.icon size={28} className="text-black" />
-                </div>
-                <h4 className="text-2xl mb-3 text-black">{feature.title}</h4>
-                <p className="text-lg text-gray-700 leading-relaxed">{feature.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Parent Features */}
-        <div className="bg-black rounded-3xl p-10 md:p-14 text-white mb-20">
-          <h3 className="text-4xl mb-10 text-center text-[#FFD93D]">
-            Empowering Parents
-          </h3>
-          <div className="grid md:grid-cols-2 gap-8">
-            {parentFeatures.map((feature, index) => (
-              <div key={index} className="flex gap-4">
-                <div className="flex-shrink-0 w-2 h-2 bg-[#FFD93D] rounded-full mt-2.5"></div>
-                <div>
-                  <h4 className="text-2xl mb-2 text-white">{feature.title}</h4>
-                  <p className="text-lg text-white/80 leading-relaxed">{feature.description}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-
-
-
       </div>
     </section>
   );
