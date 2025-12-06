@@ -1,15 +1,26 @@
 # Dependencies
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+node_modules
+.pnp
+.pnp.js
 
-# Environment variables
+# Testing
+coverage
+
+# Production
+build
+dist
+
+# Misc
+.DS_Store
 .env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
 # Netlify
 .netlify/
@@ -102,3 +113,5 @@ Thumbs.db
 
 # Accidentally created files from command output
 -*
+
+netlify/functions/.netlify/
